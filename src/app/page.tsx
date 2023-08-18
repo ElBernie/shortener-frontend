@@ -1,3 +1,9 @@
+import ShorteningInput from '@/components/ShorteningInput';
+
 export default function Home() {
-	return <main></main>;
+	return (
+		<main>
+			<ShorteningInput />
+		</main>
+	);
 }
