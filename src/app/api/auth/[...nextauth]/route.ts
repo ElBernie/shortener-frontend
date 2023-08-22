@@ -5,6 +5,9 @@ import * as jwt from 'jsonwebtoken';
 export const authOptions: AuthOptions = {
 	session: { strategy: 'jwt' },
 	secret: process.env.NEXTAUTH_SECRET,
+	pages: {
+		signIn: '/account/signin',
+	},
 	providers: [
 		CredentialsProvider({
 			credentials: {
