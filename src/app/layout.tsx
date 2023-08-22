@@ -1,3 +1,4 @@
+import NextAuthProvider from '@/Providers/nextauth.provider';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,8 +12,10 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang='en'>
-			<body>{children}</body>
-		</html>
+		<NextAuthProvider>
+			<html lang='en'>
+				<body>{children}</body>
+			</html>
+		</NextAuthProvider>
 	);
 }
