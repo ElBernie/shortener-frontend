@@ -6,7 +6,7 @@ export const authOptions: AuthOptions = {
 	session: { strategy: 'jwt' },
 	secret: process.env.NEXTAUTH_SECRET,
 	pages: {
-		signIn: '/account/signin',
+		signIn: '/auth/signin',
 	},
 	providers: [
 		CredentialsProvider({
