@@ -37,6 +37,7 @@ export const authOptions: AuthOptions = {
 					return {
 						id: token.sub as string,
 						accessToken: data.access_token,
+						workspace: data.defaultWorkspace,
 					};
 				}
 				return null;
@@ -45,11 +46,22 @@ export const authOptions: AuthOptions = {
 	],
 
 	callbacks: {
-		jwt({ token, account, user }) {
-			if (account) {
-				return { ...token, id: user.id, accessToken: user.accessToken };
+		jwt({ token, account, user, trigger, session }) {
+			if (trigger === 'update' && session.workspace) {
+				return {
+					...token,
+					workspace: session.workspace,
+				};
 			}
 
+			if (account) {
+				return {
+					...token,
+					id: user.id,
+					accessToken: user.accessToken,
+					workspace: user.workspace,
+				};
+			}
 			return token;
 		},
 
@@ -60,6 +72,7 @@ export const authOptions: AuthOptions = {
 					id: token.id,
 					accessToken: token.accessToken,
 				},
+				workspace: token.workspace || null,
 			};
 		},
 	},
