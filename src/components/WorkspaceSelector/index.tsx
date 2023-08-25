@@ -9,7 +9,6 @@ const WorkspaceSelector = () => {
 	const getWorkspaces = async () => {
 		const request = await fetch('/api/users/me/workspaces');
 		const data = await request.json();
-		console.log(data);
 		setWorkspaces(data);
 	};
 
