@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 				Authorization: `Bearer ${session.user.accessToken}`,
 			}),
 		},
-		body: JSON.stringify(data),
+		body: JSON.stringify({ ...data, workspace: session?.workspace.id || null }),
 	});
 
 	if (!shortenRequest.ok) {
