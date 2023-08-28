@@ -27,17 +27,30 @@ export const authOptions: AuthOptions = {
 					body: JSON.stringify(credentials),
 				});
 
-				if (!loginRequest.ok) {
-					return null;
-				}
-
+				if (!loginRequest.ok) return null;
 				const data = await loginRequest.json();
+
+				const workspacesRequest = await fetch(
+					`${process.env.API_URL}/workspaces`,
+					{
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${data.access_token}`,
+						},
+					}
+				);
+				if (!workspacesRequest.ok) return null;
+				const workspacesData = await workspacesRequest.json();
+
+				const defaultWorkspace = workspacesData.filter(
+					(workspace: any) => workspace.type === 'PERSONAL'
+				);
 				const token = jwt.decode(data.access_token);
-				if (token?.sub) {
+				if (token?.sub && defaultWorkspace[0]) {
 					return {
 						id: token.sub as string,
 						accessToken: data.access_token,
-						workspace: data.defaultWorkspace,
+						currentWorkspace: defaultWorkspace[0],
 					};
 				}
 				return null;
@@ -46,20 +59,22 @@ export const authOptions: AuthOptions = {
 	],
 
 	callbacks: {
+		// triggered when JWT is about to be modified
 		jwt({ token, account, user, trigger, session }) {
-			if (trigger === 'update' && session.workspace) {
+			if (trigger === 'update' && session.currentWorkspace) {
 				return {
 					...token,
-					workspace: session.workspace,
+					currentWorkspace: session.currentWorkspace,
 				};
 			}
 
+			// account is triggered when user connects
 			if (account) {
 				return {
 					...token,
 					id: user.id,
 					accessToken: user.accessToken,
-					workspace: user.workspace,
+					currentWorkspace: user.currentWorkspace,
 				};
 			}
 			return token;
@@ -72,7 +87,7 @@ export const authOptions: AuthOptions = {
 					id: token.id,
 					accessToken: token.accessToken,
 				},
-				workspace: token.workspace || null,
+				currentWorkspace: token.currentWorkspace,
 			};
 		},
 	},
