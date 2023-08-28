@@ -4,19 +4,37 @@ import { useState, useEffect } from 'react';
 
 const WorkspacesPage = () => {
 	const { data: session, update: updateSession } = useSession();
-	const [workspaces, setWorkspaces] = useState<{
-		owned: any[];
-		member: any[];
-	} | null>(null);
+	const [workspaces, setWorkspaces] = useState<any[]>([]);
 	const getWorkspaces = async () => {
-		const request = await fetch('/api/users/me/workspaces', {
+		const request = await fetch('/api/workspaces', {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${session?.user.accessToken}`,
 			},
 		});
 		const data = await request.json();
-		setWorkspaces(data);
+		const owned = data.filter(
+			(workspace: any) => workspace.ownerId == session?.user.id
+		);
+		const member = data
+			.filter((workspace: any) => workspace.ownerId != session?.user.id)
+			.map((workspace: any) => {
+				const permissions = workspace.WorkspaceMembers[0].role;
+
+				delete workspace.WorkspaceMembers;
+				delete permissions.id;
+				delete permissions.deletable;
+				delete permissions.default;
+				delete permissions.createdAt;
+				delete permissions.updatedAt;
+				delete permissions.workspaceId;
+				return {
+					...workspace,
+					permissions,
+				};
+			});
+
+		setWorkspaces([...owned, ...member]);
 	};
 
 	useEffect(() => {
@@ -25,16 +43,17 @@ const WorkspacesPage = () => {
 	return (
 		<div>
 			WorkspaceSelector <br />
-			Current workspace: {JSON.stringify(session?.workspace)}
+			Current workspace: {JSON.stringify(session?.currentWorkspace)}
 			<br />
 			<hr />
-			{workspaces?.owned &&
-				workspaces?.owned?.length > 0 &&
-				workspaces.owned.map((workspace) => (
+			{workspaces.length > 0 &&
+				workspaces.map((workspace) => (
 					<div key={workspace.id}>
 						{workspace.name}
-						{session?.workspace.id != workspace.id && (
-							<button onClick={() => updateSession({ workspace: workspace })}>
+						{session?.currentWorkspace.id != workspace.id && (
+							<button
+								onClick={() => updateSession({ currentWorkspace: workspace })}
+							>
 								select
 							</button>
 						)}

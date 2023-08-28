@@ -1,10 +1,14 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FieldValue, useForm } from 'react-hook-form';
+import { hasUserPermission } from '@/helpers';
 
 const ShorteningInput = () => {
+	const session = useSession();
+
 	const { handleSubmit, register } = useForm();
 	const [shortenedLinkAlias, setShortenedLinkAlias] = useState<string | null>(
 		null
@@ -29,6 +33,16 @@ const ShorteningInput = () => {
 		const shortenData = await shortenRequest.json();
 		setShortenedLinkAlias(shortenData.alias);
 	};
+
+	if (
+		localStorage.getItem('next-auth.session-token') &&
+		session.status == 'loading'
+	)
+		return null;
+
+	if (!hasUserPermission({ session: session.data, permission: 'linksCreate' }))
+		return null;
+
 	return (
 		<>
 			<form onSubmit={handleSubmit((data) => shorten(data))}>
