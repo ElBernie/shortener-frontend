@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
+import { Workspace } from './types';
 
 declare module 'next-auth' {
 	interface Session {
@@ -7,13 +8,13 @@ declare module 'next-auth' {
 			id: string;
 			accessToken: string;
 		};
-		workspace: any;
+		currentWorkspace: Workspace;
 	}
 
 	interface User {
 		id: string;
 		accessToken: string;
-		workspace: any;
+		currentWorkspace: Workspace;
 	}
 }
 
@@ -21,6 +22,6 @@ declare module 'next-auth/jwt' {
 	interface JWT {
 		id: string;
 		accessToken: string;
-		workspace: any;
+		currentWorkspace: Workspace;
 	}
 }

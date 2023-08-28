@@ -1,22 +1,17 @@
 'use client';
+import { getUsersWorkspaces } from '@/helpers';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 const WorkspacesPage = () => {
 	const { data: session, update: updateSession } = useSession();
-	const [workspaces, setWorkspaces] = useState<{
-		owned: any[];
-		member: any[];
-	} | null>(null);
+	const [workspaces, setWorkspaces] = useState<any[]>([]);
 	const getWorkspaces = async () => {
-		const request = await fetch('/api/users/me/workspaces', {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${session?.user.accessToken}`,
-			},
-		});
-		const data = await request.json();
-		setWorkspaces(data);
+		if (session?.user.id) {
+			const { owned, member } = await getUsersWorkspaces();
+			setWorkspaces([...owned, ...member]);
+		}
 	};
 
 	useEffect(() => {
@@ -25,16 +20,18 @@ const WorkspacesPage = () => {
 	return (
 		<div>
 			WorkspaceSelector <br />
-			Current workspace: {JSON.stringify(session?.workspace)}
+			Current workspace: {JSON.stringify(session?.currentWorkspace)}
 			<br />
+			<Link href='/dashboard'>Dashboard</Link>
 			<hr />
-			{workspaces?.owned &&
-				workspaces?.owned?.length > 0 &&
-				workspaces.owned.map((workspace) => (
+			{workspaces.length > 0 &&
+				workspaces.map((workspace) => (
 					<div key={workspace.id}>
 						{workspace.name}
-						{session?.workspace.id != workspace.id && (
-							<button onClick={() => updateSession({ workspace: workspace })}>
+						{session?.currentWorkspace.id != workspace.id && (
+							<button
+								onClick={() => updateSession({ currentWorkspace: workspace })}
+							>
 								select
 							</button>
 						)}
