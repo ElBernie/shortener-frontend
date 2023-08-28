@@ -3,8 +3,9 @@ import Link from 'next/link';
 const AccountPage = () => {
 	return (
 		<>
-			<Link href='/account/links'>My links</Link>
-			<Link href='/account/settings'>Account settings</Link>
+			<Link href='/dashboard/'>Dashboard</Link>
+			<Link href='/dashboard/account/links'>My links</Link>
+			<Link href='/dashboard/account/settings'>Account settings</Link>
 			<WorkspaceSelector />
 		</>
 	);

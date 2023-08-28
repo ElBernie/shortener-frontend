@@ -21,6 +21,6 @@ export type Workspace = {
 	deletable: boolean;
 	createdAt: Date;
 	updatedAt: Date;
-	WorkspaceMembers?: any;
+	WorkspaceMembers?: any[];
 	permissions?: typeof WORKSPACE_PERMISSIONS;
 };

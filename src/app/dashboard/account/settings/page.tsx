@@ -9,7 +9,7 @@ const AccountSettings = () => {
 		<div>
 			<h1>Account Settings</h1>
 			{JSON.stringify(session)}
-			<Link href='/account/links'>Account Links</Link>
+			<Link href='/dashboard/account'>Account</Link>
 		</div>
 	);
 };
