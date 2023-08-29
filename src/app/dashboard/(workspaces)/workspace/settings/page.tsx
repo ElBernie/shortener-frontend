@@ -1,6 +1,6 @@
 'use client';
 
-import { hasUserPermission } from '@/helpers';
+import { getUsersWorkspaces, hasUserPermission } from '@/helpers';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -28,6 +28,14 @@ const WorkspaceSettingsPage = () => {
 		/**
 		 * @todo error handling
 		 */
+
+		const defaultWorkspace = await (
+			await getUsersWorkspaces()
+		).owned.filter((workspace) => workspace.type === 'PERSONAL')[0];
+		session.update({
+			currentWorkspace: defaultWorkspace,
+		});
+
 		router.push('/dashboard/workspaces');
 	};
 
