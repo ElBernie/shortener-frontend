@@ -1,5 +1,6 @@
 'use client';
 
+import { hasUserPermission } from '@/helpers';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -15,7 +16,10 @@ const WorkspacePage = () => {
 			{workspace.type !== 'PERSONAL' && (
 				<Link href={`/dashboard/workspace/members`}>members</Link>
 			)}
-			<Link href={'/dashboard/workspace/settings'}>settings</Link>
+			{hasUserPermission({
+				session: session.data,
+				permission: 'workspaceEdit',
+			}) && <Link href={'/dashboard/workspace/settings'}>settings</Link>}
 		</div>
 	);
 };
