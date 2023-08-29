@@ -29,9 +29,10 @@ const WorkspaceSettingsPage = () => {
 		 * @todo error handling
 		 */
 
-		const defaultWorkspace = await (
-			await getUsersWorkspaces()
-		).owned.filter((workspace) => workspace.type === 'PERSONAL')[0];
+		const userWorkspaces = await getUsersWorkspaces();
+		const defaultWorkspace = userWorkspaces.owned.filter(
+			(workspace) => workspace.type === 'PERSONAL'
+		)[0];
 		session.update({
 			currentWorkspace: defaultWorkspace,
 		});
