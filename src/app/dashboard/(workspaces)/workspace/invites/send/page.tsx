@@ -1,8 +1,9 @@
 'use client';
 
+import { hasUserPermission } from '@/helpers';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { redirect, useRouter } from 'next/navigation';
+import { use, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface WorkspaceInviteProps {
@@ -16,12 +17,19 @@ const WorkspaceInvitesSendPage = () => {
 	const [error, setError] = useState(false);
 	const [inviteSent, setInviteSent] = useState(false);
 
-	if (!session.data?.currentWorkspace.id)
-		return router.replace('/dashboard/workspaces');
+	if (
+		!session.data?.currentWorkspace.id ||
+		session.data.currentWorkspace.type == 'PERSONAL' ||
+		!hasUserPermission({
+			session: session.data,
+			permission: 'workspaceMembersInvite',
+		})
+	)
+		redirect('/dashboard');
 
 	const sendInvite = handleSubmit(async (data) => {
 		const inviteRequest = await fetch(
-			`/api/workspaces/${session.data.currentWorkspace.id}/invites`,
+			`/api/workspaces/${session?.data?.currentWorkspace.id}/invites`,
 			{
 				method: 'POST',
 				body: JSON.stringify(data),

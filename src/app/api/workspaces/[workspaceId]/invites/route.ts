@@ -9,7 +9,9 @@ export const POST = async (
 ) => {
 	const session = await getServerSession(authOptions);
 
-	if (!session?.user.accessToken) throw new NextResponse(null, { status: 401 });
+	if (!session?.user.accessToken || session.currentWorkspace.type == 'PERSONAL')
+		throw new NextResponse(null, { status: 401 });
+
 	if (
 		params.workspaceId != session.currentWorkspace.id ||
 		!hasUserPermission({ session, permission: 'workspaceMembersInvite' })
