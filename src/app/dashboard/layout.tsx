@@ -42,8 +42,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	};
 
 	useEffect(() => {
-		loadUserWorkspaces();
-	}, [segment]);
+		if (session.status == 'authenticated') {
+			loadUserWorkspaces();
+		}
+	}, [segment, session]);
 
 	if (session && session.status == 'loading') {
 		return <>loading account...</>;
