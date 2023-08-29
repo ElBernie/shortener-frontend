@@ -12,8 +12,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	}
 
 	const segment = useSelectedLayoutSegment();
-	const [lastWorkspaceVerification, setLastWorkspaceVerification] =
-		useState<Date>(new Date(Date.now()));
 
 	const loadUserWorkspaces = async () => {
 		if (session.data?.user.id) {
@@ -40,8 +38,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 			) {
 				session.update({ currentWorkspace: currentWorkspace });
 			}
-
-			setLastWorkspaceVerification(new Date(Date.now()));
 		}
 	};
 
@@ -52,12 +48,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	if (session && session.status == 'loading') {
 		return <>loading account...</>;
 	} else {
-		return (
-			<>
-				{lastWorkspaceVerification.toISOString()}
-				{children}
-			</>
-		);
+		return <>{children}</>;
 	}
 };
 export default DashboardLayout;
