@@ -19,7 +19,6 @@ export const GET = async (req: Request) => {
 	);
 
 	const data = await getWorkspacesRequest.json();
-	console.log(data);
 
 	if (!getWorkspacesRequest.ok)
 		throw new NextResponse(null, {
