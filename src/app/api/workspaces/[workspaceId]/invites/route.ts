@@ -10,13 +10,13 @@ export const POST = async (
 	const session = await getServerSession(authOptions);
 
 	if (!session?.user.accessToken || session.currentWorkspace.type == 'PERSONAL')
-		throw new NextResponse(null, { status: 401 });
+		return new NextResponse(null, { status: 401 });
 
 	if (
 		params.workspaceId != session.currentWorkspace.id ||
 		!hasUserPermission({ session, permission: 'workspaceMembersInvite' })
 	)
-		throw new NextResponse(null, { status: 403 });
+		return new NextResponse(null, { status: 403 });
 
 	const reqBody = await req.json();
 	const sendInviteRequest = await fetch(
@@ -32,7 +32,7 @@ export const POST = async (
 	);
 
 	if (!sendInviteRequest.ok)
-		throw new NextResponse(null, {
+		return new NextResponse(null, {
 			status: sendInviteRequest.status,
 			statusText: sendInviteRequest.statusText,
 		});
