@@ -1,7 +1,48 @@
 'use client';
 import { Invite } from '@/types/types';
 import { useEffect, useState } from 'react';
-import { set } from 'react-hook-form';
+
+interface InviteActionButtonsProps {
+	inviteId: string;
+	onAction?: (action: 'ACCEPT' | 'REJECT') => void;
+	onError?: (error: string) => void;
+}
+const InviteActionButtons = ({
+	inviteId,
+	onAction,
+	onError,
+}: InviteActionButtonsProps) => {
+	const [loading, setLoading] = useState(false);
+	const [actionDone, setActionDone] = useState(false);
+
+	const action = async (action: 'ACCEPT' | 'REJECT') => {
+		setLoading(true);
+		const actionRequest = await fetch(`/api/users/me/invites/${inviteId}`, {
+			method: 'POST',
+			body: JSON.stringify({ action }),
+		});
+
+		setLoading(false);
+		if (!actionRequest.ok) {
+			onError && onError(actionRequest.statusText);
+			return;
+		}
+		setActionDone(true);
+		onAction && onAction(action);
+	};
+
+	if (actionDone) return null;
+	return (
+		<>
+			<button disabled={loading} onClick={async () => await action('ACCEPT')}>
+				Accept
+			</button>
+			<button disabled={loading} onClick={async () => await action('REJECT')}>
+				Reject
+			</button>
+		</>
+	);
+};
 
 const InvitesPage = () => {
 	const [invites, setInvites] = useState<Invite[]>([]);
@@ -30,7 +71,27 @@ const InvitesPage = () => {
 
 	return (
 		<div>
-			Invites Page <br /> {JSON.stringify(invites)}
+			Invites Page <br />
+			{invites.length === 0 && 'No invites'}
+			{invites.length > 0 && (
+				<ul>
+					{invites.map((invite) => (
+						<li key={invite.id}>
+							{invite.workspace.name}{' '}
+							<InviteActionButtons
+								inviteId={invite.id}
+								onAction={() =>
+									setInvites((currentInvites) =>
+										currentInvites.filter(
+											(currentInvite) => currentInvite.id !== invite.id
+										)
+									)
+								}
+							/>
+						</li>
+					))}
+				</ul>
+			)}
 		</div>
 	);
 };
