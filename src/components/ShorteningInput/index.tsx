@@ -7,6 +7,7 @@ import { FieldValue, useForm } from 'react-hook-form';
 import { hasUserPermission } from '@/helpers';
 
 const ShorteningInput = () => {
+	const session = useSession();
 	const { handleSubmit, register } = useForm();
 	const [shortenedLinkAlias, setShortenedLinkAlias] = useState<string | null>(
 		null
@@ -29,6 +30,12 @@ const ShorteningInput = () => {
 		setShortenedLinkAlias(shortenData.alias);
 	};
 
+	if (session.status === 'loading') return <p>Loading shortening form</p>;
+	if (
+		session.status === 'authenticated' &&
+		!hasUserPermission({ session: session.data, permission: 'linksCreate' })
+	)
+		return null;
 	return (
 		<>
 			<form onSubmit={handleSubmit((data) => shorten(data))}>
