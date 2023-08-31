@@ -5,7 +5,7 @@ export async function GET(
 	context: { params: { alias: string } }
 ) {
 	const linkData = await fetch(
-		`${process.env.API_URL}/links/${context.params.alias}`
+		`${process.env.API_URL}/links/alias/${context.params.alias}`
 	);
 	const response = await linkData.json();
 

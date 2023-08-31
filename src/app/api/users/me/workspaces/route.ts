@@ -7,18 +7,27 @@ export const GET = async (req: Request) => {
 	if (!session?.user.accessToken)
 		return new NextResponse(null, { status: 401 });
 
-	const request = await fetch(`${process.env.API_URL}/users/me/workspaces`, {
-		headers: req.headers,
-	});
+	const getWorkspacesRequest = await fetch(
+		`${process.env.API_URL}/users/${session.user.id}/workspaces`,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${session.user.accessToken}`,
+			},
+			cache: 'no-store',
+		}
+	);
 
-	if (!request.ok) {
+	const data = await getWorkspacesRequest.json();
+
+	if (!getWorkspacesRequest.ok)
 		throw new NextResponse(null, {
-			status: request.status,
-			statusText: request.statusText,
+			status: getWorkspacesRequest.status,
+			statusText: getWorkspacesRequest.statusText,
 		});
-	}
 
-	return new NextResponse(request.body, {
-		status: request.status,
+	return new NextResponse(JSON.stringify(data), {
+		status: getWorkspacesRequest.status,
+		statusText: getWorkspacesRequest.statusText,
 	});
 };

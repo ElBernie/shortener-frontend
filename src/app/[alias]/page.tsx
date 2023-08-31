@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 const AliasPage = async ({ params }: { params: { alias: string } }) => {
-	const data = await fetch(`${process.env.API_URL}/links/${params.alias}`, {
+	const data = await fetch(`${process.env.API_URL}/links/alias/${params.alias}`, {
 		cache: 'no-cache',
 	});
 

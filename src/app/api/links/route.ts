@@ -1,9 +1,13 @@
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { hasUserPermission } from '@/helpers';
 
 export async function POST(req: Request) {
 	const session = await getServerSession(authOptions);
+
+	if (session && !hasUserPermission({ session, permission: 'linksCreate' }))
+		return new NextResponse(null, { status: 401 });
 
 	const data = await req.json();
 
@@ -17,7 +21,7 @@ export async function POST(req: Request) {
 		},
 		body: JSON.stringify({
 			...data,
-			workspace: session?.currentWorkspace.id ?? null,
+			workspaceId: session?.currentWorkspace.id,
 		}),
 	});
 

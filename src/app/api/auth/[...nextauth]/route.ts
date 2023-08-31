@@ -30,27 +30,12 @@ export const authOptions: AuthOptions = {
 				if (!loginRequest.ok) return null;
 				const data = await loginRequest.json();
 
-				const workspacesRequest = await fetch(
-					`${process.env.API_URL}/workspaces`,
-					{
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${data.access_token}`,
-						},
-					}
-				);
-				if (!workspacesRequest.ok) return null;
-				const workspacesData = await workspacesRequest.json();
-
-				const defaultWorkspace = workspacesData.filter(
-					(workspace: any) => workspace.type === 'PERSONAL'
-				);
 				const token = jwt.decode(data.access_token);
-				if (token?.sub && defaultWorkspace[0]) {
+				if (token?.sub && data.defaultWorkspace) {
 					return {
 						id: token.sub as string,
 						accessToken: data.access_token,
-						currentWorkspace: defaultWorkspace[0],
+						currentWorkspace: data.defaultWorkspace,
 					};
 				}
 				return null;

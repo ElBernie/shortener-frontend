@@ -8,7 +8,6 @@ import { hasUserPermission } from '@/helpers';
 
 const ShorteningInput = () => {
 	const session = useSession();
-
 	const { handleSubmit, register } = useForm();
 	const [shortenedLinkAlias, setShortenedLinkAlias] = useState<string | null>(
 		null
@@ -17,9 +16,6 @@ const ShorteningInput = () => {
 	const shorten = async (data: FieldValue<{ url: string }>) => {
 		const shortenRequest = await fetch(`/api/links`, {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
 			body: JSON.stringify(data),
 		});
 
@@ -34,15 +30,12 @@ const ShorteningInput = () => {
 		setShortenedLinkAlias(shortenData.alias);
 	};
 
+	if (session.status === 'loading') return <p>Loading shortening form</p>;
 	if (
-		localStorage.getItem('next-auth.session-token') &&
-		session.status == 'loading'
+		session.status === 'authenticated' &&
+		!hasUserPermission({ session: session.data, permission: 'linksCreate' })
 	)
 		return null;
-
-	if (!hasUserPermission({ session: session.data, permission: 'linksCreate' }))
-		return null;
-
 	return (
 		<>
 			<form onSubmit={handleSubmit((data) => shorten(data))}>

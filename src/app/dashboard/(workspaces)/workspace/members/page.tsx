@@ -8,7 +8,12 @@ const WorkspaceMembersPage = async () => {
 	if (!session?.currentWorkspace) redirect('/dashboard/workspaces');
 	if (session.currentWorkspace.type === 'PERSONAL') redirect('/dashboard');
 	const membersRequest = await fetch(
-		`${process.env.API_URL}/workspaces/${session?.currentWorkspace.id}/members`
+		`${process.env.API_URL}/workspaces/${session?.currentWorkspace.id}/members`,
+		{
+			headers: {
+				Authorization: `Bearer ${session.user.accessToken}`,
+			},
+		}
 	);
 
 	/**
