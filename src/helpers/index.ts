@@ -7,6 +7,7 @@ interface HasUserPermissionProps {
 	session?: Session | null;
 	permission: keyof typeof WORKSPACE_PERMISSIONS;
 }
+
 export const hasUserPermission = ({
 	session,
 	permission,
@@ -24,26 +25,19 @@ export const getUsersWorkspaces = async () => {
 	const session = await getSession();
 	if (!session?.user.id) redirect('/auth/signin');
 
-	const request = await fetch('/api/workspaces', {
+	const request = await fetch('/api/users/me/workspaces', {
 		cache: 'no-store',
 		next: {
 			revalidate: 10,
 		},
 	});
 
-	const data: Workspace[] = await request.json();
+	const data: { owned: Workspace[]; member: Workspace[] } =
+		await request.json();
 
-	const owned: Workspace[] = data.filter(
-		(workspace: any) => workspace.ownerId == session.user.id
-	);
-
-	const member: Workspace[] = data
+	const member: Workspace[] = data.member
 		.filter((workspace: Workspace) => {
-			if (
-				workspace.ownerId != session.user.id &&
-				workspace.WorkspaceMembers &&
-				workspace.WorkspaceMembers.length > 0
-			) {
+			if (workspace.WorkspaceMembers && workspace.WorkspaceMembers.length > 0) {
 				return true;
 			} else {
 				return false;
@@ -64,5 +58,5 @@ export const getUsersWorkspaces = async () => {
 				permissions,
 			};
 		});
-	return { owned, member };
+	return { owned: data.owned, member };
 };
