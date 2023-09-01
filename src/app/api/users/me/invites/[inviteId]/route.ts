@@ -12,9 +12,9 @@ export const POST = async (
 
 	const reqBody = await req.json();
 	const inviteActionRequest = await fetch(
-		`${process.env.API_URL}/users/me/invites/${params.inviteId}`,
+		`${process.env.API_URL}/users/${session.user.id}/invites/${params.inviteId}`,
 		{
-			method: 'POST',
+			method: 'PATCH',
 			body: JSON.stringify(reqBody),
 			headers: {
 				'Content-Type': 'application/json',
