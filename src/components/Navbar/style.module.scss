@@ -1,0 +1,76 @@
+@import '../../styles/screens.scss';
+.header {
+	background-color: black;
+	position: sticky;
+	top: 0;
+	width: 100%;
+}
+/* Logo */
+.logo {
+	display: inline-block;
+	color: white;
+	font-size: 2rem;
+	margin-left: 10px;
+}
+
+.navbarSwitch {
+	color: black;
+}
+.navbar {
+	display: none;
+	background-color: white;
+
+	ul {
+		list-style: none;
+		margin: 0;
+
+		a {
+			color: white;
+			text-decoration: none;
+		}
+	}
+}
+
+.navbarOpen {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+}
+
+@include tablet() {
+	.header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.navbar {
+		background-color: black;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+
+		ul {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			margin-right: 10px;
+			gap: 10px;
+		}
+		button {
+			display: none;
+		}
+	}
+
+	.logo {
+		margin-left: 0;
+	}
+	.navbarSwitch {
+		display: none;
+	}
+}
