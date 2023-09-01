@@ -9,7 +9,7 @@ export const GET = async () => {
 		return new NextResponse(null, { status: 401 });
 
 	const getInvitesRequest = await fetch(
-		`${process.env.API_URL}/users/me/invites`,
+		`${process.env.API_URL}/users/${session.user.id}/invites`,
 		{
 			headers: {
 				'Content-Type': 'application/json',

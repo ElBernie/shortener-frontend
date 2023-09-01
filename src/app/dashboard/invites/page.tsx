@@ -24,11 +24,12 @@ const InviteActionButtons = ({
 
 		setLoading(false);
 		if (!actionRequest.ok) {
-			onError && onError(actionRequest.statusText);
+			onError?.(actionRequest.statusText);
 			return;
 		}
+
 		setActionDone(true);
-		onAction && onAction(action);
+		onAction?.(action);
 	};
 
 	if (actionDone) return null;
