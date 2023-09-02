@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import style from './style.module.scss';
 import Link from 'next/link';
+import WorkspaceSelector from '../WorkspaceSelector';
 const ConnectedNavbar = () => {
 	const [navbarOpen, setNavbarOpen] = useState(false);
 	return (
@@ -20,7 +21,7 @@ const ConnectedNavbar = () => {
 						<Link href='/dashboard/workspace'>Workspace</Link>
 					</li>
 					<li>
-						<Link href='/dashboard/workspaces'>My workspaces</Link>
+						<WorkspaceSelector />
 					</li>
 					<li>
 						<Link href='/dashboard/account'>My account</Link>
