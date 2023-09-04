@@ -9,7 +9,10 @@ const WorkspaceLinksPage = () => {
 	const [links, setLinks] = useState([]);
 
 	const getLinks = async (workspaceId: string) => {
-		const links = await getLinksAction(workspaceId);
+		const links = await getLinksAction(workspaceId, {
+			include: ['URL', 'user', 'workspace', 'domain'],
+			userId: '123',
+		});
 		setLinks(links);
 	};
 
