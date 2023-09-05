@@ -12,15 +12,14 @@ const AuthForm = ({ redirect }: { redirect?: string }) => {
 
 	const login = handleSubmit(async (data) => {
 		const loginData = await signIn('credentials', {
-			redirect: false,
+			redirect: true,
 			email: data.email,
 			password: data.password,
+			callbackUrl: redirect ? redirect : '/dashboard',
 		});
 
 		if (loginData?.error) {
 			setFormError('Invalid credentials');
-		} else {
-			router.push(redirect ? redirect : '/');
 		}
 	});
 

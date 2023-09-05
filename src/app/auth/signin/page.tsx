@@ -11,12 +11,13 @@ const AuthPage = async ({
 	};
 }) => {
 	const session = await getServerSession();
+	
 
 	if (session) {
 		return redirect('/');
 	}
 
-	return <AuthForm redirect={searchParams?.redirect} />;
+	return <AuthForm redirect={searchParams?.redirect}/>;
 };
 
 export default AuthPage;
