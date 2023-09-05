@@ -2,16 +2,22 @@
 
 import { getUsersWorkspaces } from '@/helpers';
 import { useSession } from 'next-auth/react';
-import { useSelectedLayoutSegment, redirect } from 'next/navigation';
-import { useEffect, useState } from 'react';
+
+import {
+	useSelectedLayoutSegment,
+	redirect,
+	usePathname,
+} from 'next/navigation';
+
+import { useEffect } from 'react';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+	const path = usePathname();
 	const session = useSession();
-	if (!session?.data?.user && session?.status != 'loading') {
-		redirect('/auth/signin');
-	}
-
 	const segment = useSelectedLayoutSegment();
+	if (!session?.data?.user && session?.status != 'loading') {
+		redirect('/auth/signin?redirect=' + path);
+	}
 
 	const loadUserWorkspaces = async () => {
 		if (session.data?.user.id) {

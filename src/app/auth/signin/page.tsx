@@ -3,14 +3,20 @@ import { getServerSession } from 'next-auth';
 
 import { redirect } from 'next/navigation';
 
-const AuthPage = async () => {
+const AuthPage = async ({
+	searchParams,
+}: {
+	searchParams?: {
+		redirect?: string;
+	};
+}) => {
 	const session = await getServerSession();
 
 	if (session) {
 		return redirect('/');
 	}
 
-	return <AuthForm />;
+	return <AuthForm redirect={searchParams?.redirect} />;
 };
 
 export default AuthPage;
