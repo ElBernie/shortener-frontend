@@ -20,7 +20,7 @@ const NavbarUnconnected = () => {
 						<Link href='/auth/signin'>Sign in</Link>
 					</li>
 					<li>
-						<Link href='/auth/register'>Register</Link>
+						<Link href='/auth/signup'>Register</Link>
 					</li>
 				</ul>
 			</nav>
