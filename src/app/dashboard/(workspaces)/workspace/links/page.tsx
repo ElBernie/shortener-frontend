@@ -10,7 +10,7 @@ const WorkspaceLinksPage = () => {
 
 	const getLinks = async (workspaceId: string) => {
 		const links = await getLinksAction(workspaceId, {
-			include: ['URL', 'user', 'workspace', 'domain'],
+			include: ['URL'],
 			userId: '123',
 		});
 		setLinks(links);

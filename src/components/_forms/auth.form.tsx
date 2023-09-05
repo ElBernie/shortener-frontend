@@ -5,22 +5,21 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const AuthForm = () => {
+const AuthForm = ({ redirect }: { redirect?: string }) => {
 	const router = useRouter();
 	const { register, handleSubmit } = useForm();
 	const [formError, setFormError] = useState<string | null>(null);
 
 	const login = handleSubmit(async (data) => {
 		const loginData = await signIn('credentials', {
-			redirect: false,
+			redirect: true,
 			email: data.email,
 			password: data.password,
+			callbackUrl: redirect ? redirect : '/dashboard',
 		});
 
 		if (loginData?.error) {
 			setFormError('Invalid credentials');
-		} else {
-			router.push('/');
 		}
 	});
 

@@ -21,12 +21,17 @@ const WorkspaceSelectionPanel = (props: WorkspaceSelectionPanelProps) => {
 			{props.workspaces.map((workspace) => {
 				return (
 					<li key={workspace.id} onClick={() => onSelect(workspace)}>
-						{workspace.name}
+						<Link href='/dashboard/'>{workspace.name}</Link>
 					</li>
 				);
 			})}
 			<li>
-				<Link href='/dashboard/workspaces/create'>Create a new workspace</Link>
+				<Link
+					href='/dashboard/workspaces/create'
+					className={style.newWorkspaceLink}
+				>
+					Create a new workspace
+				</Link>
 			</li>
 		</ul>
 	);

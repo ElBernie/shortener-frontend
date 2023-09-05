@@ -3,7 +3,10 @@ import { useState } from 'react';
 import style from './style.module.scss';
 import Link from 'next/link';
 import WorkspaceSelector from '../WorkspaceSelector';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 const ConnectedNavbar = () => {
+	const router = useRouter();
 	const [navbarOpen, setNavbarOpen] = useState(false);
 	return (
 		<>
@@ -22,6 +25,16 @@ const ConnectedNavbar = () => {
 					</li>
 					<li>
 						<WorkspaceSelector />
+					</li>
+					<li>
+						<Link
+							href={'/'}
+							onClick={async () => {
+								await signOut({ redirect: true, callbackUrl: '/' });
+							}}
+						>
+							Log out
+						</Link>
 					</li>
 					<li>
 						<Link href='/dashboard/account'>My account</Link>

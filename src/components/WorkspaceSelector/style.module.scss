@@ -26,7 +26,10 @@
 			margin: 0;
 			padding: 0;
 			a {
-				color: red;
+				color: black;
+				&.newWorkspaceLink {
+					color: red;
+				}
 			}
 		}
 	}
