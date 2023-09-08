@@ -1,6 +1,7 @@
+import { registerLinkHit } from '@/actions/links/registerHit.action';
 import validateLinkPassword from '@/actions/validate-password.action';
-import { notFound, redirect } from 'next/navigation';
 import { headers } from 'next/headers';
+import { notFound, redirect } from 'next/navigation';
 
 const AliasPage = async ({
 	params,
@@ -23,6 +24,15 @@ const AliasPage = async ({
 	/**@todo better error handling */
 
 	const data = await linkRequest.json();
+
+	const headersList = headers();
+	registerLinkHit(data.id, {
+		ip: headersList.get('ip'),
+		useragent: headersList.get('user-agent'),
+		languages: headersList.get('accept-language'),
+		referer: headersList.get('referer'),
+	});
+
 	if (data.password) {
 		return (
 			<div>
