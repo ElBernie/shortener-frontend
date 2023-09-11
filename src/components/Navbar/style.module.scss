@@ -16,7 +16,7 @@
 .navbarSwitch {
 	color: black;
 }
-.navbar {
+.navbarMobile {
 	display: none;
 	background-color: white;
 
@@ -29,6 +29,10 @@
 			text-decoration: none;
 		}
 	}
+}
+.navbar {
+	display: none;
+	background-color: white;
 }
 
 .navbarOpen {
@@ -62,8 +66,11 @@
 			align-items: center;
 			margin-right: 10px;
 			gap: 10px;
+			list-style: none;
+			margin: 0;
 			a {
 				color: white;
+				text-decoration: none;
 			}
 		}
 		button {

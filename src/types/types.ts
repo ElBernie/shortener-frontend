@@ -17,6 +17,7 @@ export type Workspace = {
 	id: string;
 	name: string;
 	ownerId: string;
+	owner?: User;
 	type: 'PERSONAL' | 'PROFESSIONAL';
 	deletable: boolean;
 	createdAt: Date;
@@ -25,23 +26,17 @@ export type Workspace = {
 	permissions?: typeof WORKSPACE_PERMISSIONS;
 };
 
-/**
- * id": "2a9b61d7-0bbb-4835-b31c-ac20559854ca",
-        "email": "arroues.bernard+4@gmail.com",
-        "createdAt": "2023-08-29T14:15:25.747Z",
-        "updatedAt": "2023-08-29T14:15:25.747Z",
-        "workspaceId": "c6bd86e4-f981-42b8-93da-bd4eee5e8079",
-        "workspace": {
-            "id": "c6bd86e4-f981-42b8-93da-bd4eee5e8079",
-            "name": "Workspace perso",
-            "ownerId": "035dfdb7-f067-45d8-bf81-1a9700d649ca",
-            "type": "PERSONAL",
-            "deletable": false,
-            "createdAt": "2023-08-29T12:18:56.955Z",
-            "updatedAt": "2023-08-29T12:18:39.950Z"
-        }
-    }
- */
+// some parameters like email or password are optionnal, because they're not always sent by the backend
+export type User = {
+	id: string;
+	email?: string;
+	password?: string;
+	validated: boolean;
+	createdAt: Date;
+	updated: Date;
+	links?: Array<Link>;
+	OwnedWorkspaces?: Array<Workspace>;
+};
 export type Invite = {
 	id: string;
 	email: string;
@@ -49,4 +44,46 @@ export type Invite = {
 	updatedAt: Date;
 	workspaceId: string;
 	workspace: Workspace;
+};
+
+export type URL = {
+	id: string;
+	url: string;
+	protocol: string;
+	pathname: string;
+	search?: string;
+	hash?: string;
+	createdAt: Date;
+	updatedAt: Date;
+	host: string;
+	Domain?: Array<Domain>;
+};
+
+export type LinkStats = {
+	visits?: number;
+};
+export type Link = {
+	id: string;
+	alias: string;
+	createdAt: Date;
+	updatedAt: Date;
+	password?: string;
+	userid?: string;
+	workspaceId: string;
+	URLId: string;
+	host: string;
+	URL?: URL;
+	Domain?: Domain;
+	stats?: LinkStats;
+};
+
+export type Domain = {
+	host: string;
+	banned: boolean;
+	ageRestricted: boolean;
+	createdAt: Date;
+	updatedAt: Date;
+
+	links?: Array<Link>;
+	URL?: Array<URL>;
 };
