@@ -3,10 +3,10 @@ import { useState } from 'react';
 import style from './style.module.scss';
 import Link from 'next/link';
 import WorkspaceSelector from '../WorkspaceSelector';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
+
 const ConnectedNavbar = () => {
-	const router = useRouter();
+	const session = useSession();
 	const [navbarOpen, setNavbarOpen] = useState(false);
 	return (
 		<>
@@ -17,8 +17,30 @@ const ConnectedNavbar = () => {
 				X
 			</button>
 
-			<nav className={`${style.navbar} ${navbarOpen && style.navbarOpen}`}>
+			<nav
+				className={`${style.navbarMobile}  ${navbarOpen && style.navbarOpen}`}
+			>
 				<button onClick={() => setNavbarOpen(false)}>X</button>
+				<div>
+					{session?.data?.currentWorkspace && (
+						<>
+							<span>Workspace</span>
+							<ul>
+								<li>
+									<Link href='/dashboard/workspace'>Workspace</Link>
+								</li>
+								<li>
+									<Link href='/dashboard/workspace/links'>Liens</Link>
+								</li>
+								{session?.data?.currentWorkspace?.type === 'PROFESSIONAL' && (
+									<li>Members</li>
+								)}
+							</ul>
+						</>
+					)}
+				</div>
+			</nav>
+			<nav className={`${style.navbar}`}>
 				<ul>
 					<li>
 						<Link href='/dashboard/workspace'>Workspace</Link>
