@@ -57,6 +57,27 @@ const ConnectedNavbar = () => {
 							</ul>
 						</>
 					)}
+					<span>Account</span>
+					<ul>
+						<li>
+							<Link
+								href='/dashboard/account/settings'
+								onClick={() => setNavbarOpen(false)}
+							>
+								settings
+							</Link>
+						</li>
+						<li>
+							<Link
+								href={'/'}
+								onClick={async () => {
+									await signOut({ redirect: true, callbackUrl: '/' });
+								}}
+							>
+								Log out
+							</Link>
+						</li>
+					</ul>
 				</div>
 				<div>
 					<Link href='/dashboard/workspaces'>Switch workspace</Link>
