@@ -1,17 +1,17 @@
+@import '../../styles/screens.scss';
 .selectorContainer {
 	background-color: white;
 	width: 8em;
 
 	.selectorButton {
 		max-width: 100%;
-		position: relative;
+position: relative;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 
 	.selectionPanel {
-		position: absolute;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -31,6 +31,17 @@
 					color: red;
 				}
 			}
+		}
+	}
+}
+
+@include tablet() {
+	.selectorContainer {
+		.selectorButton {
+			position: relative;
+		}
+		.selectionPanel {
+			position: absolute;
 		}
 	}
 }
