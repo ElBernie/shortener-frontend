@@ -1,5 +1,6 @@
 'use client';
 
+import { getLinkStatsAction } from '@/actions/links/getLinkStats.action';
 import { getLinksAction } from '@/actions/links/getLinks.action';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -13,6 +14,12 @@ const WorkspaceLinksPage = () => {
 			include: ['URL'],
 			userId: '123',
 		});
+		await Promise.all(
+			links.map(async (link: any) => {
+				const stats = await getLinkStatsAction(link.id);
+				link.stats = stats;
+			})
+		);
 		setLinks(links);
 	};
 
