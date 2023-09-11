@@ -17,6 +17,7 @@ export type Workspace = {
 	id: string;
 	name: string;
 	ownerId: string;
+	owner?: User;
 	type: 'PERSONAL' | 'PROFESSIONAL';
 	deletable: boolean;
 	createdAt: Date;
@@ -25,7 +26,17 @@ export type Workspace = {
 	permissions?: typeof WORKSPACE_PERMISSIONS;
 };
 
-
+// some parameters like email or password are optionnal, because they're not always sent by the backend
+export type User = {
+	id: string;
+	email?: string;
+	password?: string;
+	validated: boolean;
+	createdAt: Date;
+	updated: Date;
+	links?: Array<Link>;
+	OwnedWorkspaces?: Array<Workspace>;
+};
 export type Invite = {
 	id: string;
 	email: string;
@@ -33,4 +44,46 @@ export type Invite = {
 	updatedAt: Date;
 	workspaceId: string;
 	workspace: Workspace;
+};
+
+export type URL = {
+	id: string;
+	url: string;
+	protocol: string;
+	pathname: string;
+	search?: string;
+	hash?: string;
+	createdAt: Date;
+	updatedAt: Date;
+	host: string;
+	Domain?: Array<Domain>;
+};
+
+export type LinkStats = {
+	visits?: number;
+};
+export type Link = {
+	id: string;
+	alias: string;
+	createdAt: Date;
+	updatedAt: Date;
+	password?: string;
+	userid?: string;
+	workspaceId: string;
+	URLId: string;
+	host: string;
+	URL?: URL;
+	Domain?: Domain;
+	stats?: LinkStats;
+};
+
+export type Domain = {
+	host: string;
+	banned: boolean;
+	ageRestricted: boolean;
+	createdAt: Date;
+	updatedAt: Date;
+
+	links?: Array<Link>;
+	URL?: Array<URL>;
 };
