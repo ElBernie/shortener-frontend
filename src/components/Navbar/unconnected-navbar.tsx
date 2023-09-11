@@ -17,10 +17,14 @@ const NavbarUnconnected = () => {
 				<button onClick={() => setNavbarOpen(false)}>X</button>
 				<ul>
 					<li>
-						<Link href='/auth/signin'>Sign in</Link>
+						<Link href='/auth/signin' onClick={() => setNavbarOpen(false)}>
+							Sign in
+						</Link>
 					</li>
 					<li>
-						<Link href='/auth/signup'>Register</Link>
+						<Link href='/auth/signup' onClick={() => setNavbarOpen(false)}>
+							Register
+						</Link>
 					</li>
 				</ul>
 			</nav>
