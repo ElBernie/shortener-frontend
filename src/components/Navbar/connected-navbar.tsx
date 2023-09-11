@@ -80,7 +80,12 @@ const ConnectedNavbar = () => {
 					</ul>
 				</div>
 				<div>
-					<Link href='/dashboard/workspaces'>Switch workspace</Link>
+					<Link
+						href='/dashboard/workspaces'
+						onClick={() => setNavbarOpen(false)}
+					>
+						Switch workspace
+					</Link>
 				</div>
 			</nav>
 			<nav className={`${style.navbar}`}>
