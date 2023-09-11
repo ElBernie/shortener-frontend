@@ -2,6 +2,7 @@
 
 import { getLinkStatsAction } from '@/actions/links/getLinkStats.action';
 import { getLinksAction } from '@/actions/links/getLinks.action';
+import LinkDisplay from '@/components/LinkDisplay';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
@@ -35,7 +36,7 @@ const WorkspaceLinksPage = () => {
 			<br />{' '}
 			<ul>
 				{links.map((link: any) => (
-					<li key={link.alias}>{JSON.stringify(link)}</li>
+					<LinkDisplay key={link.id} link={link} />
 				))}
 			</ul>
 		</>
