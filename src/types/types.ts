@@ -73,9 +73,11 @@ export type Link = {
 	password?: string;
 	hits: number;
 	userid?: string;
+
 	workspaceId: string;
 	URLId: string;
 	host: string;
+	user?: User;
 	URL?: URL;
 	Domain?: Domain;
 	stats?: LinkStats;
