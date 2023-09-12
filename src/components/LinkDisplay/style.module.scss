@@ -1,0 +1,57 @@
+.linkCardContainer {
+	display: flex;
+	flex-direction: row;
+	gap: 0.75rem;
+	background-color: white;
+	padding: 1rem;
+	border-radius: 0.25rem;
+
+	h4 {
+		margin: 0.25rem 0;
+	}
+
+	> .iconContainer {
+		> .icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 38;
+			width: 38;
+			background: white;
+			border-radius: 100%;
+		}
+	}
+	> .actionContainer {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 0.5rem;
+		> .action {
+			display: flex;
+			gap: 0.5rem;
+			align-items: center;
+			justify-content: center;
+			height: 38;
+			width: 38;
+			background: white;
+			border-radius: 100%;
+		}
+	}
+
+	> div {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		> .linkCardHeader {
+			display: flex;
+			gap: 0.5rem;
+			align-items: center;
+		}
+
+		> .linkCardFooter {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+		}
+	}
+}
