@@ -53,6 +53,7 @@ export type URL = {
 	pathname: string;
 	search?: string;
 	hash?: string;
+	hits: number;
 	createdAt: Date;
 	updatedAt: Date;
 	host: string;
@@ -68,6 +69,7 @@ export type Link = {
 	createdAt: Date;
 	updatedAt: Date;
 	password?: string;
+	hits: number;
 	userid?: string;
 	workspaceId: string;
 	URLId: string;
@@ -81,6 +83,7 @@ export type Domain = {
 	host: string;
 	banned: boolean;
 	ageRestricted: boolean;
+	hits: number;
 	createdAt: Date;
 	updatedAt: Date;
 
