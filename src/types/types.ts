@@ -49,6 +49,7 @@ export type Invite = {
 export type URL = {
 	id: string;
 	url: string;
+	title?: string;
 	protocol: string;
 	pathname: string;
 	search?: string;
@@ -66,6 +67,7 @@ export type LinkStats = {
 export type Link = {
 	id: string;
 	alias: string;
+	title?: string;
 	createdAt: Date;
 	updatedAt: Date;
 	password?: string;
