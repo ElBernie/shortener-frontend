@@ -49,10 +49,12 @@ export type Invite = {
 export type URL = {
 	id: string;
 	url: string;
+	title?: string;
 	protocol: string;
 	pathname: string;
 	search?: string;
 	hash?: string;
+	hits: number;
 	createdAt: Date;
 	updatedAt: Date;
 	host: string;
@@ -65,13 +67,17 @@ export type LinkStats = {
 export type Link = {
 	id: string;
 	alias: string;
+	title?: string;
 	createdAt: Date;
 	updatedAt: Date;
 	password?: string;
+	hits: number;
 	userid?: string;
+
 	workspaceId: string;
 	URLId: string;
 	host: string;
+	user?: User;
 	URL?: URL;
 	Domain?: Domain;
 	stats?: LinkStats;
@@ -81,6 +87,7 @@ export type Domain = {
 	host: string;
 	banned: boolean;
 	ageRestricted: boolean;
+	hits: number;
 	createdAt: Date;
 	updatedAt: Date;
 

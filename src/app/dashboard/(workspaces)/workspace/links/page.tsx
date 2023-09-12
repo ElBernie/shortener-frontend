@@ -5,6 +5,7 @@ import { getLinksAction } from '@/actions/links/getLinks.action';
 import LinkDisplay from '@/components/LinkDisplay';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import style from './style.module.scss';
 
 const WorkspaceLinksPage = () => {
 	const session = useSession();
@@ -33,12 +34,11 @@ const WorkspaceLinksPage = () => {
 	return (
 		<>
 			Links
-			<br />{' '}
-			<ul>
+			<div className={style.linksHolder}>
 				{links.map((link: any) => (
 					<LinkDisplay key={link.id} link={link} />
 				))}
-			</ul>
+			</div>
 		</>
 	);
 };

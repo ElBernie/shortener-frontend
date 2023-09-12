@@ -5,6 +5,7 @@ import Link from 'next/link';
 import WorkspaceSelector from '../WorkspaceSelector';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { LuMenuSquare } from 'react-icons/lu';
 
 const ConnectedNavbar = () => {
 	const session = useSession();
@@ -12,12 +13,10 @@ const ConnectedNavbar = () => {
 
 	return (
 		<>
-			<button
+			<LuMenuSquare
 				className={style.navbarSwitch}
 				onClick={() => setNavbarOpen(true)}
-			>
-				X
-			</button>
+			/>
 
 			<nav
 				className={`${style.navbarMobile}  ${navbarOpen && style.navbarOpen}`}
