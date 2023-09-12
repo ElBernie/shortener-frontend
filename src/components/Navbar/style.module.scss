@@ -1,20 +1,28 @@
 @import '../../styles/screens.scss';
+@import '../../styles//colors.scss';
 .header {
-	background-color: black;
+	background-color: white;
+	display: flex;
 	position: sticky;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1rem;
 	top: 0;
-	width: 100%;
+	max-width: 100%;
+	margin-bottom: 1rem;
 }
 /* Logo */
 .logo {
 	display: inline-block;
-	color: white;
+
+	color: $color-primary;
 	font-size: 2rem;
-	margin-left: 10px;
+	font-weight: 700;
 }
 
 .navbarSwitch {
-	color: black;
+	color: $color-text;
+	font-size: 1.5rem;
 }
 .navbarMobile {
 	display: none;
@@ -25,14 +33,13 @@
 		margin: 0;
 
 		a {
-			color: black;
+			color: $color-text;
 			text-decoration: none;
 		}
 	}
 }
 .navbar {
 	display: none;
-	background-color: white;
 }
 
 .navbarOpen {
@@ -43,7 +50,7 @@
 	left: 0;
 	height: 100vh;
 	width: 100vw;
-	color: black;
+	color: $color-text;
 }
 
 @include tablet() {
@@ -54,7 +61,8 @@
 		align-items: center;
 	}
 	.navbar {
-		background-color: black;
+		background-color: white;
+		color: $color-text;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -69,7 +77,7 @@
 			list-style: none;
 			margin: 0;
 			a {
-				color: white;
+				color: $color-text;
 				text-decoration: none;
 			}
 		}
