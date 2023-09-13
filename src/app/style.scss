@@ -10,3 +10,31 @@ body {
 	flex-direction: column;
 	color: $color-text;
 }
+
+input {
+	border-radius: 0.25rem;
+	border: 1px solid gainsboro;
+	padding: 0.5rem;
+}
+
+button {
+	border-radius: 0.25rem;
+	border: none;
+	padding: 0.5rem;
+	background-color: $color-secondary;
+	color: white;
+	cursor: pointer;
+
+	&:hover {
+		background-color: darken($color: $color-secondary, $amount: 5);
+	}
+}
+
+a {
+	color: $color-secondary;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
