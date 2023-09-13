@@ -1,10 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import style from './style.module.scss';
 import Link from 'next/link';
 import WorkspaceSelector from '../WorkspaceSelector';
 import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import { LuMenuSquare } from 'react-icons/lu';
 
 const ConnectedNavbar = () => {
