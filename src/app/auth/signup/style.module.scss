@@ -1,8 +1,8 @@
 @import '../../../styles/colors.scss';
+@import '../../../styles/screens';
 .registerHolder {
 	display: flex;
 	flex-direction: column;
-
 	align-items: center;
 	justify-content: center;
 	gap: 2rem;
@@ -11,5 +11,14 @@
 		font-size: 2rem;
 		font-weight: 500;
 		color: $color-text;
+	}
+}
+
+@include tablet() {
+	.registerHolder {
+		flex-grow: 1;
+
+		padding: 2rem;
+		border-radius: 0.25rem;
 	}
 }
