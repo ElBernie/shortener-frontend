@@ -72,32 +72,37 @@ const RegisterForm = () => {
 				</fieldset>
 
 				<fieldset>
-					<legend>
-						Your password
-						<span></span>
-					</legend>
-					<input
-						type='password'
-						placeholder='Password'
-						{...register('password', {
-							required: true,
-							minLength: 8,
-							validate: () => confirmPassword(),
-						})}
-					/>
-					<legend>
-						Confirm your password
-						<span>just to be sure...</span>
-					</legend>
-					<input
-						type='password'
-						placeholder='confirm your password'
-						{...register('passwordConfirmation', {
-							required: true,
-							minLength: 8,
-							validate: () => confirmPassword(),
-						})}
-					/>
+					<div>
+						<legend>
+							Your password
+							<span></span>
+						</legend>
+						<input
+							type='password'
+							placeholder='Password'
+							{...register('password', {
+								required: true,
+								minLength: 8,
+								validate: () => confirmPassword(),
+							})}
+						/>
+					</div>
+
+					<div>
+						<legend>
+							Confirm your password
+							<span>just to be sure...</span>
+						</legend>
+						<input
+							type='password'
+							placeholder='confirm your password'
+							{...register('passwordConfirmation', {
+								required: true,
+								minLength: 8,
+								validate: () => confirmPassword(),
+							})}
+						/>
+					</div>
 				</fieldset>
 
 				<button type='submit'>Register</button>
