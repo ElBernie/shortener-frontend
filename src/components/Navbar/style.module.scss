@@ -18,6 +18,15 @@
 	color: $color-primary;
 	font-size: 2rem;
 	font-weight: 700;
+	transition: text-shadow 0.1s ease;
+	&:hover {
+		cursor: pointer;
+
+		@include tablet() {
+			text-shadow: 0 2px 1px darken($color: $color-primary, $amount: 10);
+			color: lighten($color: $color-primary, $amount: 5);
+		}
+	}
 }
 
 .navbarSwitch {
