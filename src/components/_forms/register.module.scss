@@ -1,0 +1,27 @@
+@import '../../styles/_colors.scss';
+.form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	gap: 2rem;
+
+	> * {
+		margin: 0 1rem;
+	}
+
+	> fieldset {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		> legend {
+			display: flex;
+			flex-direction: column;
+			> span {
+				font-size: 0.75rem;
+				font-weight: normal;
+				color: lighten($color-text, 15%);
+			}
+		}
+	}
+}
