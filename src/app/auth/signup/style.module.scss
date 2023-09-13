@@ -1,3 +1,4 @@
+@import '../../../styles/colors.scss';
 .registerHolder {
 	display: flex;
 	flex-direction: column;
@@ -5,4 +6,10 @@
 	align-items: center;
 	justify-content: center;
 	gap: 2rem;
+
+	h1 {
+		font-size: 2rem;
+		font-weight: 500;
+		color: $color-text;
+	}
 }
