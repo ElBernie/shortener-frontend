@@ -4,8 +4,8 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import style from './style.module.scss';
 import { Workspace } from '@/types/types';
-import { set } from 'react-hook-form';
 import Link from 'next/link';
+import { LuChevronDown } from 'react-icons/lu';
 
 interface WorkspaceSelectionPanelProps {
 	workspaces: Workspace[];
@@ -77,16 +77,22 @@ const WorkspaceSelector = (props: WorkspaceSelectorProps) => {
 			ref={ref}
 			className={style.selectorContainer}
 			style={props.style}
-			onClick={() =>
-				setShowWorkspaceSelectionPanel((currentState) => !currentState)
-			}
 			onBlur={() => setShowWorkspaceSelectionPanel(false)}
 		>
 			<div className={style.selectorButton}>
 				{session.status === 'loading' ? (
 					'Loading...'
 				) : (
-					<>{session.data?.currentWorkspace.name}</>
+					<>
+						<Link href='/dashboard/workspace'>
+							{session.data?.currentWorkspace.name}
+						</Link>
+						<LuChevronDown
+							onClick={() =>
+								setShowWorkspaceSelectionPanel((currentState) => !currentState)
+							}
+						/>
+					</>
 				)}
 			</div>
 

@@ -1,14 +1,15 @@
 @import '../../styles/screens.scss';
 .selectorContainer {
-	background-color: white;
-	width: 8em;
-
 	.selectorButton {
 		max-width: 100%;
-position: relative;
+		position: relative;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.selectionPanel {
