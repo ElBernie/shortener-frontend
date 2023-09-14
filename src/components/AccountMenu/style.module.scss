@@ -1,0 +1,47 @@
+@import '../../styles/screens.scss';
+.accountMenuContainer {
+	background-color: white;
+	width: 8em;
+
+	.accountMenuButton {
+		max-width: 100%;
+		position: relative;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.accountMenuPanel {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background-color: white;
+		padding: 0;
+		margin: 0;
+		padding-top: 0.3rem;
+		gap: 0.3rem;
+
+		li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			a {
+				color: black;
+				&.newWorkspaceLink {
+					color: red;
+				}
+			}
+		}
+	}
+}
+
+@include tablet() {
+	.accountMenuContainer {
+		.accountMenuButton {
+			position: relative;
+		}
+		.accountMenuPanel {
+			position: absolute;
+		}
+	}
+}
