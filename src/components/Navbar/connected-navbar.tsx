@@ -1,10 +1,11 @@
 'use client';
-import {  useState } from 'react';
+import { useState } from 'react';
 import style from './style.module.scss';
 import Link from 'next/link';
 import WorkspaceSelector from '../WorkspaceSelector';
 import { signOut, useSession } from 'next-auth/react';
 import { LuMenuSquare } from 'react-icons/lu';
+import AccountMenu from '../AccountMenu';
 
 const ConnectedNavbar = () => {
 	const session = useSession();
@@ -89,23 +90,11 @@ const ConnectedNavbar = () => {
 			<nav className={`${style.navbar}`}>
 				<ul>
 					<li>
-						<Link href='/dashboard/workspace'>Workspace</Link>
-					</li>
-					<li>
 						<WorkspaceSelector />
 					</li>
+
 					<li>
-						<Link
-							href={'/'}
-							onClick={async () => {
-								await signOut({ redirect: true, callbackUrl: '/' });
-							}}
-						>
-							Log out
-						</Link>
-					</li>
-					<li>
-						<Link href='/dashboard/account'>My account</Link>
+						<AccountMenu />
 					</li>
 				</ul>
 			</nav>
