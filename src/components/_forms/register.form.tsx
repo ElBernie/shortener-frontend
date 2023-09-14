@@ -1,6 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+
+import style from './register.module.scss';
 
 interface FormValues {
 	email: string;
@@ -57,33 +59,51 @@ const RegisterForm = () => {
 		return <p>Register Success</p>;
 	} else {
 		return (
-			<form onSubmit={signup}>
+			<form onSubmit={signup} className={style.form}>
 				{formError && <p>{formError}</p>}
-				<input
-					type='email'
-					placeholder='Email'
-					{...register('email', { required: true })}
-				/>
 
-				<input
-					type='password'
-					placeholder='Password'
-					{...register('password', {
-						required: true,
-						minLength: 8,
-						validate: () => confirmPassword(),
-					})}
-				/>
+				<fieldset>
+					<legend>Your email </legend>
+					<input
+						type='email'
+						placeholder='Email'
+						{...register('email', { required: true })}
+					/>
+				</fieldset>
 
-				<input
-					type='password'
-					placeholder='Confirm Password'
-					{...register('passwordConfirmation', {
-						required: true,
-						minLength: 8,
-						validate: () => confirmPassword(),
-					})}
-				/>
+				<fieldset>
+					<div>
+						<legend>
+							Your password
+							<span></span>
+						</legend>
+						<input
+							type='password'
+							placeholder='Password'
+							{...register('password', {
+								required: true,
+								minLength: 8,
+								validate: () => confirmPassword(),
+							})}
+						/>
+					</div>
+
+					<div>
+						<legend>
+							Confirm your password
+							<span>just to be sure...</span>
+						</legend>
+						<input
+							type='password'
+							placeholder='confirm your password'
+							{...register('passwordConfirmation', {
+								required: true,
+								minLength: 8,
+								validate: () => confirmPassword(),
+							})}
+						/>
+					</div>
+				</fieldset>
 
 				<button type='submit'>Register</button>
 			</form>

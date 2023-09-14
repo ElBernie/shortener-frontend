@@ -3,13 +3,14 @@
 .header {
 	background-color: white;
 	display: flex;
-	position: sticky;
+	position: relative;
 	align-items: center;
 	justify-content: space-between;
-	padding: 1rem;
+	padding: 0.25rem 1rem;
 	top: 0;
 	max-width: 100%;
-	margin-bottom: 1rem;
+
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 /* Logo */
 .logo {
@@ -18,6 +19,15 @@
 	color: $color-primary;
 	font-size: 2rem;
 	font-weight: 700;
+	transition: text-shadow 0.1s ease;
+	&:hover {
+		cursor: pointer;
+
+		@include tablet() {
+			text-shadow: 0 2px 1px darken($color: $color-primary, $amount: 10);
+			color: lighten($color: $color-primary, $amount: 5);
+		}
+	}
 }
 
 .navbarSwitch {
@@ -48,6 +58,7 @@
 	position: absolute;
 	top: 0;
 	left: 0;
+	z-index: 99;
 	height: 100vh;
 	width: 100vw;
 	color: $color-text;

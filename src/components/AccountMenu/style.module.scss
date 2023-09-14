@@ -1,25 +1,25 @@
 @import '../../styles/screens.scss';
-.selectorContainer {
-	.selectorButton {
+.accountMenuContainer {
+	background-color: white;
+	width: 8em;
+
+	.accountMenuButton {
 		max-width: 100%;
 		position: relative;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
 	}
 
-	.selectionPanel {
+	.accountMenuPanel {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		background-color: white;
-		padding: 0;
-		margin: 0;
-		padding-top: 0.3rem;
+		border: 1px solid gainsboro;
+		border-radius: 0.25rem;
+		margin: 0.5rem 0;
+		padding: 0.5rem 2.5rem;
 		gap: 0.3rem;
 
 		li {
@@ -37,12 +37,13 @@
 }
 
 @include tablet() {
-	.selectorContainer {
-		.selectorButton {
+	.accountMenuContainer {
+		.accountMenuButton {
 			position: relative;
 		}
-		.selectionPanel {
+		.accountMenuPanel {
 			position: absolute;
+			right: 0;
 		}
 	}
 }

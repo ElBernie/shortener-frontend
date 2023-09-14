@@ -1,5 +1,6 @@
 'use client';
 
+import DashboardNav from '@/components/DashboardNav';
 import { getUsersWorkspaces } from '@/helpers';
 import { useSession } from 'next-auth/react';
 
@@ -56,7 +57,21 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	if (session && session.status == 'loading') {
 		return <>loading account...</>;
 	} else {
-		return <>{children}</>;
+		return (
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'row',
+					flexGrow: 1,
+					gap: '1rem',
+				}}
+			>
+				<DashboardNav />
+				<div style={{ display: 'flex', flexDirection: 'column' }}>
+					{children}
+				</div>
+			</div>
+		);
 	}
 };
 export default DashboardLayout;
