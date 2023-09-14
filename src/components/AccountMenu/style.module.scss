@@ -16,9 +16,10 @@
 		flex-direction: column;
 		justify-content: center;
 		background-color: white;
-		padding: 0;
-		margin: 0;
-		padding-top: 0.3rem;
+		border: 1px solid gainsboro;
+		border-radius: 0.25rem;
+		margin: 0.5rem 0;
+		padding: 0.5rem 2.5rem;
 		gap: 0.3rem;
 
 		li {
@@ -42,6 +43,7 @@
 		}
 		.accountMenuPanel {
 			position: absolute;
+			right: 0;
 		}
 	}
 }
