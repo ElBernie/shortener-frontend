@@ -11,7 +11,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 const DashboardNav = () => {
 	const [keepNavbarOpen, setKeepNavbarOpen] = useState(true);
-	const [navbarOpen, setNavbarOpen] = useState(false);
+	const [navbarOpen, setNavbarOpen] = useState(true);
 	return (
 		<div
 			className={style.dashboardNavContainer}
@@ -31,6 +31,7 @@ const DashboardNav = () => {
 					<LuChevronLeftCircle
 						onClick={() => {
 							setKeepNavbarOpen(false);
+							setNavbarOpen(false);
 						}}
 					/>
 				) : (
