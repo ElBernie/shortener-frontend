@@ -1,35 +1,44 @@
+@import '../../styles/screens.scss';
 .dashboardNavContainer {
-	background-color: white;
-	z-index: 2;
+	display: none;
+}
 
-	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
-	border-top: 1px solid rgba(0, 0, 0, 0.015);
-
-	svg {
-		font-size: 1.2rem;
-	}
-	> div {
-		display: flex;
-		flex-direction: row;
-		justify-content: right;
-		padding: 0.5rem 1rem;
-	}
-	ul {
-		margin: 0;
-		padding: 0;
+@include tablet() {
+	.dashboardNavContainer {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
-		padding: 0 1rem;
-	}
+		background-color: white;
 
-	li {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
+		min-height: max-content;
+		box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+		border-top: 1px solid rgba(0, 0, 0, 0.015);
 
-		list-style: none;
-		display: flex;
-		gap: 0.25rem;
+		svg {
+			font-size: 1.2rem;
+		}
+		> div {
+			display: flex;
+			flex-direction: row;
+			justify-content: right;
+			padding: 0.5rem 1rem;
+		}
+		ul {
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+			padding: 0 1rem;
+		}
+
+		li {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			list-style: none;
+			display: flex;
+			gap: 0.25rem;
+		}
 	}
 }
