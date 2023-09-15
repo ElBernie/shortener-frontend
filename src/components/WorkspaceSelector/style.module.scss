@@ -1,4 +1,5 @@
 @import '../../styles/screens.scss';
+@import '../../styles/colors.scss';
 .selectorContainer {
 	.selectorButton {
 		max-width: 100%;
@@ -17,19 +18,25 @@
 		flex-direction: column;
 		justify-content: center;
 		background-color: white;
-		padding: 0;
-		margin: 0;
-		padding-top: 0.3rem;
+		border: 1px solid gainsboro;
+		border-radius: 0.25rem;
+		padding: 0.5rem 0;
+		margin: 0.5rem 1rem;
 		gap: 0.3rem;
 
 		li {
 			list-style: none;
 			margin: 0;
-			padding: 0;
+
 			a {
-				color: black;
+				color: $color-text;
+				padding: 0 1.5rem;
 				&.newWorkspaceLink {
-					color: red;
+					display: block;
+					color: white;
+					background-color: $color-secondary;
+					width: 100%;
+					padding: 0 0rem;
 				}
 			}
 		}
@@ -43,6 +50,7 @@
 		}
 		.selectionPanel {
 			position: absolute;
+			right: 1.5rem;
 		}
 	}
 }
