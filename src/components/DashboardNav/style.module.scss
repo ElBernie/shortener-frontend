@@ -6,6 +6,15 @@
 
 @include tablet() {
 	.dashboardNavContainer {
+		display: flex;
+		flex-direction: column;
+		background-color: white;
+
+		min-height: max-content;
+		box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+		border-top: 1px solid rgba(0, 0, 0, 0.015);
+		padding: 0.5rem 0;
+
 		.activeLink {
 			svg {
 				background-color: $color-secondary;
@@ -17,13 +26,6 @@
 				color: $color-secondary;
 			}
 		}
-		display: flex;
-		flex-direction: column;
-		background-color: white;
-
-		min-height: max-content;
-		box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
-		border-top: 1px solid rgba(0, 0, 0, 0.015);
 
 		svg {
 			font-size: 1.2rem;

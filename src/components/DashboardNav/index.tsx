@@ -11,11 +11,12 @@ import {
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+
 const DashboardNav = () => {
 	const pathname = usePathname();
 	const session = useSession();
-	const [keepNavbarOpen, setKeepNavbarOpen] = useState(true);
-	const [navbarOpen, setNavbarOpen] = useState(true);
+	const [keepNavbarOpen, setKeepNavbarOpen] = useState(false);
+	const [navbarOpen, setNavbarOpen] = useState(false);
 	return (
 		<div
 			className={style.dashboardNavContainer}
@@ -30,7 +31,7 @@ const DashboardNav = () => {
 				}
 			}}
 		>
-			<div>
+			{/* <div>
 				{keepNavbarOpen ? (
 					<LuChevronLeftCircle
 						onClick={() => {
@@ -41,7 +42,7 @@ const DashboardNav = () => {
 				) : (
 					<LuChevronRightCircle onClick={() => setKeepNavbarOpen(true)} />
 				)}
-			</div>
+			</div> */}
 			<nav>
 				<ul>
 					<li
