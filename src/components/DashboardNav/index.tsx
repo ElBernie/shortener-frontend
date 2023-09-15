@@ -8,8 +8,12 @@ import {
 	LuChevronLeftCircle,
 	LuUsers2,
 } from 'react-icons/lu';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 const DashboardNav = () => {
+	const pathname = usePathname();
+	const session = useSession();
 	const [keepNavbarOpen, setKeepNavbarOpen] = useState(true);
 	const [navbarOpen, setNavbarOpen] = useState(true);
 	return (
@@ -40,20 +44,42 @@ const DashboardNav = () => {
 			</div>
 			<nav>
 				<ul>
-					<li>
-						<LuHome />
-						{navbarOpen && <Link href='/dashboard/workspace'>Accueil</Link>}
+					<li
+						className={
+							pathname == '/dashboard/workspace' ? style.activeLink : undefined
+						}
+					>
+						<Link href='/dashboard/workspace'>
+							<LuHome />
+							{navbarOpen && <span>Accueil</span>}
+						</Link>
 					</li>
-					<li>
-						<LuLink />
-						{navbarOpen && <Link href='/dashboard/workspace/links'>Liens</Link>}
+					<li
+						className={
+							pathname == '/dashboard/workspace/links'
+								? style.activeLink
+								: undefined
+						}
+					>
+						<Link href='/dashboard/workspace/links'>
+							<LuLink />
+							{navbarOpen && <span>Links</span>}
+						</Link>
 					</li>
-					<li>
-						<LuUsers2 />
-						{navbarOpen && (
-							<Link href='/dashboard/workspace/members'>Members</Link>
-						)}
-					</li>
+					{session.data?.currentWorkspace.type == 'PROFESSIONAL' && (
+						<li
+							className={
+								pathname == '/dashboard/workspace/members'
+									? style.activeLink
+									: undefined
+							}
+						>
+							<Link href='/dashboard/workspace/members'>
+								<LuUsers2 />
+								{navbarOpen && <span>Members</span>}
+							</Link>
+						</li>
+					)}
 				</ul>
 			</nav>
 		</div>

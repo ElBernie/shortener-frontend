@@ -1,10 +1,22 @@
 @import '../../styles/screens.scss';
+@import '../../styles/colors';
 .dashboardNavContainer {
 	display: none;
 }
 
 @include tablet() {
 	.dashboardNavContainer {
+		.activeLink {
+			svg {
+				background-color: $color-secondary;
+				color: white;
+				padding: 0.25rem;
+				border-radius: 0.25rem;
+			}
+			a {
+				color: $color-secondary;
+			}
+		}
 		display: flex;
 		flex-direction: column;
 		background-color: white;
@@ -15,6 +27,7 @@
 
 		svg {
 			font-size: 1.2rem;
+			padding: 0.25rem;
 		}
 		> div {
 			display: flex;
@@ -32,13 +45,20 @@
 		}
 
 		li {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-
 			list-style: none;
-			display: flex;
-			gap: 0.25rem;
+			a {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+
+				display: flex;
+				gap: 0.25rem;
+				cursor: pointer;
+				color: $color-text;
+				&:hover {
+					text-decoration: none;
+				}
+			}
 		}
 	}
 }
