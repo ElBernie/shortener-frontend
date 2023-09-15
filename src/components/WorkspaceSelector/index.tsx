@@ -17,23 +17,20 @@ const WorkspaceSelectionPanel = (props: WorkspaceSelectionPanelProps) => {
 		session.update({ currentWorkspace: workspace });
 	};
 	return (
-		<ul className={style.selectionPanel}>
-			{props.workspaces.map((workspace) => {
-				return (
-					<li key={workspace.id} onClick={() => onSelect(workspace)}>
-						<Link href='/dashboard/'>{workspace.name}</Link>
-					</li>
-				);
-			})}
-			<li>
-				<Link
-					href='/dashboard/workspaces/create'
-					className={style.newWorkspaceLink}
-				>
-					Create a new workspace
-				</Link>
-			</li>
-		</ul>
+		<div className={style.selectionPanel}>
+			<ul>
+				{props.workspaces.map((workspace) => {
+					return (
+						<li key={workspace.id} onClick={() => onSelect(workspace)}>
+							<Link href='/dashboard/'>{workspace.name}</Link>
+						</li>
+					);
+				})}
+			</ul>
+			<Link href='/dashboard/workspaces/create'>
+				<div>Create a new workspace</div>
+			</Link>
+		</div>
 	);
 };
 
