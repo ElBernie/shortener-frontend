@@ -1,8 +1,7 @@
 'use client';
 
-import { hasUserPermission } from '@/helpers';
+import WorkspaceLinksVisits from '@/components/charts/WorkspaceLinksVisits';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 const WorkspacePage = () => {
@@ -13,13 +12,7 @@ const WorkspacePage = () => {
 	return (
 		<div>
 			{workspace.name}
-			{workspace.type !== 'PERSONAL' && (
-				<Link href={`/dashboard/workspace/members`}>members</Link>
-			)}
-			{hasUserPermission({
-				session: session.data,
-				permission: 'workspaceEdit',
-			}) && <Link href={'/dashboard/workspace/settings'}>settings</Link>}
+			<WorkspaceLinksVisits workspaceId={session.data.currentWorkspace.id} />
 		</div>
 	);
 };
