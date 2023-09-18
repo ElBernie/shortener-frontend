@@ -1,7 +1,7 @@
 'use client';
 
-import WorkspaceLinksLangs from '@/components/charts/WorkspaceLinksLangs';
-import WorkspaceLinksVisits from '@/components/charts/WorkspaceLinksVisits';
+import WorkspaceLinksLangs from '@/components/_charts/WorkspaceLinksLangs';
+import WorkspaceLinksVisits from '@/components/_charts/WorkspaceLinksVisits';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 
