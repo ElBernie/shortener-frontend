@@ -27,8 +27,8 @@ const WorkspaceLinksVisits = ({ workspaceId }: { workspaceId: string }) => {
 
 	const loadData = async () => {
 		const stats = await getWorkspaceVisits(workspaceId, {
-			start: '2021-01-01',
-			interval: '1mo',
+			start: '-7d',
+			interval: '1d',
 		});
 		//todo if array empty
 		const label = stats.map((stat: { time: string; value: number }) =>
