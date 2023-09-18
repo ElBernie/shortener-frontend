@@ -25,7 +25,7 @@ const WorkspaceInvitesSendPage = () => {
 			permission: 'workspaceMembersInvite',
 		})
 	)
-		redirect('/dashboard');
+		redirect('/dashboard/workspace');
 
 	const sendInvite = handleSubmit(async (data) => {
 		const inviteRequest = await fetch(
