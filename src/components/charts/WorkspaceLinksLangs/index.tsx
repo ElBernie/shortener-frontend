@@ -1,6 +1,5 @@
 'use client';
 import { getWorkspaceLinksLangs } from '@/actions/workspaces/getWorkspaceLinksLangs.action';
-import { randomColor } from '@/helpers/colors.helper';
 import { ArcElement, Chart } from 'chart.js';
 import { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
@@ -9,7 +8,6 @@ Chart.register(ArcElement);
 const WorkspaceLinksLangs = ({ workspaceId }: { workspaceId: string }) => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [labels, setLabels] = useState<string[]>([]);
-	const [labelsBackground, setLabelsBackground] = useState<string[]>([]);
 	const [values, setValues] = useState<number[]>([]);
 
 	const loadData = async () => {
@@ -19,26 +17,13 @@ const WorkspaceLinksLangs = ({ workspaceId }: { workspaceId: string }) => {
 			interval: '1d',
 		});
 		//todo if array empty
-		const labelData: Array<{ label: string; color: string }> = stats.map(
-			(stat: { lang: string; value: number }) => {
-				return {
-					label: langsName.of(stat.lang),
-					color: randomColor(),
-				};
-			}
-		);
 
 		setLabels(
-			labelData.map((label: { label: string; color: string }) => label.label)
+			stats.map((stat: { lang: string; value: number }) =>
+				langsName.of(stat.lang)
+			)
 		);
-		setLabelsBackground(
-			labelData.map((label: { label: string; color: string }) => label.color)
-		);
-        
-		const values = stats.map(
-			(stat: { time: string; value: number }) => stat.value
-		);
-		setValues(values);
+		setValues(stats.map((stat: { time: string; value: number }) => stat.value));
 
 		setLoading(false);
 	};
@@ -54,7 +39,9 @@ const WorkspaceLinksLangs = ({ workspaceId }: { workspaceId: string }) => {
 
 					datasets: [
 						{
-							backgroundColor: labelsBackground,
+							backgroundColor: labels.map(
+								(label, idx) => `rgba(240,138,5,${1 - idx / labels.length})`
+							),
 							data: values,
 						},
 					],
