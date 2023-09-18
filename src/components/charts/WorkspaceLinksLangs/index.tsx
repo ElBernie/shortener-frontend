@@ -27,14 +27,14 @@ const WorkspaceLinksLangs = ({ workspaceId }: { workspaceId: string }) => {
 				};
 			}
 		);
-		console.log(labelData);
+
 		setLabels(
 			labelData.map((label: { label: string; color: string }) => label.label)
 		);
-
 		setLabelsBackground(
 			labelData.map((label: { label: string; color: string }) => label.color)
 		);
+        
 		const values = stats.map(
 			(stat: { time: string; value: number }) => stat.value
 		);

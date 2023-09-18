@@ -34,7 +34,6 @@ const WorkspaceLinksVisits = ({ workspaceId }: { workspaceId: string }) => {
 		const label = stats.map((stat: { time: string; value: number }) =>
 			new Date(stat.time).toLocaleDateString()
 		);
-		console.log(label);
 		setLabels(label);
 		const values = stats.map(
 			(stat: { time: string; value: number }) => stat.value
@@ -42,7 +41,6 @@ const WorkspaceLinksVisits = ({ workspaceId }: { workspaceId: string }) => {
 		setValues(values);
 
 		setLoading(false);
-		console.log(stats);
 	};
 
 	useEffect(() => {
