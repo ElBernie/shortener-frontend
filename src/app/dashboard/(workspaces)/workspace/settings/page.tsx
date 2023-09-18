@@ -15,7 +15,7 @@ const WorkspaceSettingsPage = () => {
 			permission: 'workspaceEdit',
 		})
 	)
-		return router.replace('/dashboard/');
+		return router.replace('/dashboard/workspace');
 
 	const deleteWorkspace = async () => {
 		const deleteRequest = await fetch(

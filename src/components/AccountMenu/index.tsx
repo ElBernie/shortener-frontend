@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import style from './style.module.scss';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import { LuUser2 } from 'react-icons/lu';
 
 const AccountMenu = () => {
 	const ref = useRef<HTMLDivElement>(null);
@@ -26,7 +27,9 @@ const AccountMenu = () => {
 			onClick={() => setShowMenu((currentState) => !currentState)}
 			onBlur={() => setShowMenu(false)}
 		>
-			<div className={style.accountMenuButton}>My account</div>
+			<div className={style.accountMenuButton}>
+				<LuUser2 />
+			</div>
 			{showMenu && (
 				<ul className={style.accountMenuPanel}>
 					<li>
