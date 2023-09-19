@@ -34,7 +34,7 @@ const WorkspaceLinksPage = () => {
 
 	return (
 		<>
-			Links
+			<h1>Links</h1>
 			<div className={style.linksHolder}>
 				{links.map((link: any) => (
 					<LinkDisplay
