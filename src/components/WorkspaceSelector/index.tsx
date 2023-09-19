@@ -9,6 +9,7 @@ import { LuChevronDown } from 'react-icons/lu';
 
 interface WorkspaceSelectionPanelProps {
 	workspaces: Workspace[];
+	onClick: () => void;
 }
 const WorkspaceSelectionPanel = (props: WorkspaceSelectionPanelProps) => {
 	const session = useSession();
@@ -22,7 +23,9 @@ const WorkspaceSelectionPanel = (props: WorkspaceSelectionPanelProps) => {
 				{props.workspaces.map((workspace) => {
 					return (
 						<li key={workspace.id} onClick={() => onSelect(workspace)}>
-							<Link href='/dashboard/workspace'>{workspace.name}</Link>
+							<Link href='/dashboard/workspace' onClick={() => props.onClick()}>
+								{workspace.name}
+							</Link>
 						</li>
 					);
 				})}
@@ -94,7 +97,10 @@ const WorkspaceSelector = (props: WorkspaceSelectorProps) => {
 			</div>
 
 			{showWorkspaceSelectionPanel && (
-				<WorkspaceSelectionPanel workspaces={workspaces} />
+				<WorkspaceSelectionPanel
+					workspaces={workspaces}
+					onClick={() => setShowWorkspaceSelectionPanel(false)}
+				/>
 			)}
 		</div>
 	);
