@@ -42,6 +42,9 @@ const ShorteningInput = () => {
 				<input
 					type='url'
 					placeholder='Shorten your link'
+					autoComplete='off'
+					autoCapitalize='off'
+					autoCorrect='off'
 					{...register('url', { required: true })}
 				/>
 				<button type='submit'>Shorten</button>
