@@ -1,16 +1,17 @@
 'use client';
 import { Link as LinkType } from '@/types/types';
 
-import {
-	LuSearch,
-	LuBarChart3,
-	LuCalendar,
-	LuUserCircle2,
-	LuLock,
-} from 'react-icons/lu';
+import { LuBarChart3, LuCalendar, LuLock, LuTrash2 } from 'react-icons/lu';
 import style from './style.module.scss';
 import { useState } from 'react';
-const LinkDisplay = ({ link }: { link: LinkType }) => {
+import { deleteLink } from '@/actions/links/deleteLink.action';
+const LinkDisplay = ({
+	link,
+	onDelete,
+}: {
+	link: LinkType;
+	onDelete(linkId: string): void;
+}) => {
 	const baseURL = link.URL ? new URL(link.URL.url).origin : null;
 	const [showIcon, setShowIcon] = useState(true);
 	return (
@@ -33,15 +34,25 @@ const LinkDisplay = ({ link }: { link: LinkType }) => {
 
 				<a
 					href={`${window.location.protocol}//${window.location.host}/${link.alias}`}
+					target='_blank'
 				>
 					{window.location.host}/{link.alias}
 				</a>
+				{link.id}
 				<div className={style.linkCardFooter}>
 					<span>
 						<LuBarChart3 /> {link.hits ?? '0'} visites
 					</span>
 					<span>
 						<LuCalendar /> {new Date(link.createdAt).toLocaleDateString()}
+					</span>
+					<span>
+						<LuTrash2
+							onClick={async () => {
+								await deleteLink(link.id);
+								onDelete(link.id);
+							}}
+						/>
 					</span>
 					{link.password && (
 						<span>

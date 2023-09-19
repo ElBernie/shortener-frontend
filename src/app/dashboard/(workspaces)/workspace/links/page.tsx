@@ -6,10 +6,11 @@ import LinkDisplay from '@/components/LinkDisplay';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import style from './style.module.scss';
+import { Link } from '@/types/types';
 
 const WorkspaceLinksPage = () => {
 	const session = useSession();
-	const [links, setLinks] = useState([]);
+	const [links, setLinks] = useState<Link[]>([]);
 
 	const getLinks = async (workspaceId: string) => {
 		const links = await getLinksAction(workspaceId, {
@@ -36,7 +37,15 @@ const WorkspaceLinksPage = () => {
 			Links
 			<div className={style.linksHolder}>
 				{links.map((link: any) => (
-					<LinkDisplay key={link.id} link={link} />
+					<LinkDisplay
+						key={link.id}
+						link={link}
+						onDelete={(linkId) =>
+							setLinks((currentLinks) =>
+								currentLinks.filter((link) => link.id != linkId)
+							)
+						}
+					/>
 				))}
 			</div>
 		</>
