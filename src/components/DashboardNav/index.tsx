@@ -7,6 +7,8 @@ import {
 	LuChevronRightCircle,
 	LuChevronLeftCircle,
 	LuUsers2,
+	LuBadgePlus,
+	LuSettings,
 } from 'react-icons/lu';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
@@ -45,6 +47,12 @@ const DashboardNav = () => {
 			</div> */}
 			<nav>
 				<ul>
+					<li className={`${style.activeLink} ${style.createButton}`}>
+						<Link href='/dashboard/workspace/create'>
+							<LuBadgePlus />
+							{navbarOpen && <span>Create</span>}
+						</Link>
+					</li>
 					<li
 						className={
 							pathname == '/dashboard/workspace' ? style.activeLink : undefined
@@ -81,6 +89,18 @@ const DashboardNav = () => {
 							</Link>
 						</li>
 					)}
+					<li
+						className={
+							pathname == '/dashboard/workspace/settings'
+								? style.activeLink
+								: undefined
+						}
+					>
+						<Link href='/dashboard/workspace/settings'>
+							<LuSettings />
+							{navbarOpen && <span>Settings</span>}
+						</Link>
+					</li>
 				</ul>
 			</nav>
 		</div>

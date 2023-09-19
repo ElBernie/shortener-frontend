@@ -1,17 +1,19 @@
 'use client';
 import { Link as LinkType } from '@/types/types';
 
-import {
-	LuSearch,
-	LuBarChart3,
-	LuCalendar,
-	LuUserCircle2,
-	LuLock,
-} from 'react-icons/lu';
+import { LuBarChart3, LuCalendar, LuLock, LuTrash2 } from 'react-icons/lu';
 import style from './style.module.scss';
 import { useState } from 'react';
-const LinkDisplay = ({ link }: { link: LinkType }) => {
-	const baseURL = link.URL ? new URL(link.URL.url).origin : null;
+import { deleteLink } from '@/actions/links/deleteLink.action';
+import { link } from 'fs';
+
+export interface LinkDisplayProps {
+	link: LinkType;
+	hideToolbar?: boolean;
+	onDelete(linkId: string): void;
+}
+const LinkDisplay = (props: LinkDisplayProps) => {
+	const baseURL = props.link.URL ? new URL(props.link.URL.url).origin : null;
 	const [showIcon, setShowIcon] = useState(true);
 	return (
 		<div className={style.linkCardContainer}>
@@ -29,24 +31,39 @@ const LinkDisplay = ({ link }: { link: LinkType }) => {
 			</div>
 
 			<div className={style.linkCardBody}>
-				<h4>{link.title ?? link.URL?.title ?? 'Unnamed link'}</h4>
+				<h4>{props.link.title ?? props.link.URL?.title ?? 'Unnamed link'}</h4>
 
 				<a
-					href={`${window.location.protocol}//${window.location.host}/${link.alias}`}
+					href={`${window.location.protocol}//${window.location.host}/${props.link.alias}`}
+					target='_blank'
 				>
-					{window.location.host}/{link.alias}
+					{window.location.host}/{props.link.alias}
 				</a>
+				{props.link.id}
 				<div className={style.linkCardFooter}>
-					<span>
-						<LuBarChart3 /> {link.hits ?? '0'} visites
-					</span>
-					<span>
-						<LuCalendar /> {new Date(link.createdAt).toLocaleDateString()}
-					</span>
-					{link.password && (
-						<span>
-							<LuLock />
-						</span>
+					{props.hideToolbar ? null : (
+						<>
+							<span>
+								<LuBarChart3 /> {props.link.hits ?? '0'} visites
+							</span>
+							<span>
+								<LuCalendar />{' '}
+								{new Date(props.link.createdAt).toLocaleDateString()}
+							</span>
+							<span>
+								<LuTrash2
+									onClick={async () => {
+										await deleteLink(props.link.id);
+										props.onDelete(props.link.id);
+									}}
+								/>
+							</span>
+							{props.link.password && (
+								<span>
+									<LuLock />
+								</span>
+							)}
+						</>
 					)}
 				</div>
 			</div>

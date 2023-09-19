@@ -25,15 +25,8 @@ export const getUsersWorkspaces = async () => {
 	const session = await getSession();
 	if (!session?.user.id) redirect('/auth/signin');
 
-	const request = await fetch('/api/users/me/workspaces', {
-		cache: 'no-store',
-		next: {
-			revalidate: 10,
-		},
-	});
-
 	const data: { owned: Workspace[]; member: Workspace[] } =
-		await request.json();
+		await getUsersWorkspaces();
 
 	const member: Workspace[] = data.member
 		.filter((workspace: Workspace) => {

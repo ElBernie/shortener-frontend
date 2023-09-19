@@ -67,7 +67,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 				}}
 			>
 				<DashboardNav />
-				<div style={{ display: 'flex', flexDirection: 'column' }}>
+				<div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
 					{children}
 				</div>
 			</div>
