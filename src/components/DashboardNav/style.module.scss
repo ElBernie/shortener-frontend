@@ -25,6 +25,36 @@
 			a {
 				color: $color-secondary;
 			}
+
+			&:hover {
+				svg {
+					background-color: lighten($color-secondary, 10%);
+				}
+				a {
+					color: lighten($color-secondary, 10%);
+				}
+			}
+		}
+
+		.createButton {
+			background-color: $color-primary;
+			border-radius: 0.25rem;
+			svg {
+				background-color: inherit;
+			}
+			a {
+				color: white;
+			}
+
+			&:hover {
+				background-color: lighten($color-primary, 5%);
+				svg {
+					background-color: inherit;
+				}
+				a {
+					color: white;
+				}
+			}
 		}
 
 		svg {
