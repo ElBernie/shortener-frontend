@@ -1,17 +1,18 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { useState } from 'react';
-import { FieldValue, useForm } from 'react-hook-form';
+
+import { useRef, useState } from 'react';
+import { FieldValue } from 'react-hook-form';
 import { hasUserPermission } from '@/helpers';
+import { Link } from '@/types/types';
+import LinkDisplay from '../LinkDisplay';
 
 const ShorteningInput = () => {
 	const session = useSession();
-	const { handleSubmit, register } = useForm();
-	const [shortenedLinkAlias, setShortenedLinkAlias] = useState<string | null>(
-		null
-	);
+	const urlInput = useRef<HTMLInputElement>(null);
+
+	const [shortenedLinks, setShortenedLinks] = useState<Array<Link>>([]);
 
 	const shorten = async (data: FieldValue<{ url: string }>) => {
 		const shortenRequest = await fetch(`/api/links`, {
@@ -27,7 +28,8 @@ const ShorteningInput = () => {
 		}
 
 		const shortenData = await shortenRequest.json();
-		setShortenedLinkAlias(shortenData.alias);
+		urlInput && urlInput.current && (urlInput.current.value = '');
+		setShortenedLinks((currentLinks) => [...currentLinks, shortenData]);
 	};
 
 	if (session.status === 'loading') return <p>Loading shortening form</p>;
@@ -38,19 +40,41 @@ const ShorteningInput = () => {
 		return null;
 	return (
 		<>
-			<form onSubmit={handleSubmit((data) => shorten(data))}>
+			<form>
 				<input
+					ref={urlInput}
 					type='url'
-					placeholder='Shorten your link'
+					placeholder='Paste your link here'
 					autoComplete='off'
 					autoCapitalize='off'
 					autoCorrect='off'
-					{...register('url', { required: true })}
+					onPaste={(event) => {
+						try {
+							const url = new URL(event.clipboardData.getData('text'));
+							shorten({ url: url.toString() });
+						} catch (error) {
+							/**
+							 * @todo Handle error
+							 */
+						}
+					}}
 				/>
-				<button type='submit'>Shorten</button>
 			</form>
-			{shortenedLinkAlias && (
-				<Link href={`/${shortenedLinkAlias}`}>{shortenedLinkAlias}</Link>
+			{shortenedLinks.length > 0 && (
+				<div>
+					{shortenedLinks.reverse().map((link) => (
+						<LinkDisplay
+							link={link}
+							key={link.id}
+							hideToolbar
+							onDelete={(linkId: string) =>
+								setShortenedLinks((currentLinks) =>
+									currentLinks.filter((link) => link.id !== linkId)
+								)
+							}
+						/>
+					))}
+				</div>
 			)}
 		</>
 	);
