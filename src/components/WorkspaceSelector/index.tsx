@@ -7,8 +7,12 @@ import { Workspace } from '@/types/types';
 import Link from 'next/link';
 import { LuChevronDown } from 'react-icons/lu';
 
+import { getUserWorkspaces } from '@/actions/users/getUserWorkspaces.action';
+import { Oval } from 'react-loader-spinner';
+
 interface WorkspaceSelectionPanelProps {
 	workspaces: Workspace[];
+	loading: boolean;
 	onClick: () => void;
 }
 const WorkspaceSelectionPanel = (props: WorkspaceSelectionPanelProps) => {
@@ -17,21 +21,40 @@ const WorkspaceSelectionPanel = (props: WorkspaceSelectionPanelProps) => {
 	const onSelect = (workspace: Workspace) => {
 		session.update({ currentWorkspace: workspace });
 	};
+
 	return (
 		<div className={style.selectionPanel}>
-			<ul>
-				{props.workspaces.map((workspace) => {
-					return (
-						<li key={workspace.id} onClick={() => onSelect(workspace)}>
-							<Link href='/dashboard/workspace' onClick={() => props.onClick()}>
-								{workspace.name}
-							</Link>
-						</li>
-					);
-				})}
-			</ul>
+			{props.loading ? (
+				<Oval
+					height={25}
+					width={25}
+					color='rgb(76, 138, 116)'
+					wrapperClass={style.loader}
+					visible={true}
+					ariaLabel='loading'
+					secondaryColor='rgb(240, 138, 0)'
+					strokeWidth={5}
+					strokeWidthSecondary={5}
+				/>
+			) : (
+				<ul>
+					{props.workspaces.map((workspace) => {
+						return (
+							<li key={workspace.id} onClick={() => onSelect(workspace)}>
+								<Link
+									href='/dashboard/workspace'
+									onClick={() => props.onClick()}
+								>
+									{workspace.name}
+								</Link>
+							</li>
+						);
+					})}
+				</ul>
+			)}
+
 			<Link href='/dashboard/workspaces/create'>
-				<div>Create a new workspace</div>
+				<div className={style.newWorkspaceButton}>Create a new workspace</div>
 			</Link>
 		</div>
 	);
@@ -44,20 +67,22 @@ interface WorkspaceSelectorProps {
 const WorkspaceSelector = (props: WorkspaceSelectorProps) => {
 	const session = useSession();
 	const ref = useRef<HTMLDivElement>(null);
+	const [loading, setLoading] = useState(true);
 	const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
 	const [showWorkspaceSelectionPanel, setShowWorkspaceSelectionPanel] =
 		useState<boolean>(false);
 	const getWorkspaces = async () => {
-		const request = await fetch('/api/users/me/workspaces');
-		const data: { owned: Workspace[]; member: Workspace[] } =
-			await request.json();
-
+		const data = await getUserWorkspaces();
 		setWorkspaces([...data.owned, ...data.member]);
+		setLoading(false);
 	};
 
 	useEffect(() => {
-		getWorkspaces();
-	}, []);
+		if (showWorkspaceSelectionPanel) {
+			setLoading(true);
+			getWorkspaces();
+		}
+	}, [showWorkspaceSelectionPanel]);
 
 	// handle click outside of the component
 	useEffect(() => {
@@ -88,9 +113,10 @@ const WorkspaceSelector = (props: WorkspaceSelectorProps) => {
 							{session.data?.currentWorkspace.name}
 						</Link>
 						<LuChevronDown
-							onClick={() =>
-								setShowWorkspaceSelectionPanel((currentState) => !currentState)
-							}
+							onClick={() => {
+								setLoading(true);
+								setShowWorkspaceSelectionPanel((currentState) => !currentState);
+							}}
 						/>
 					</>
 				)}
@@ -99,6 +125,7 @@ const WorkspaceSelector = (props: WorkspaceSelectorProps) => {
 			{showWorkspaceSelectionPanel && (
 				<WorkspaceSelectionPanel
 					workspaces={workspaces}
+					loading={loading}
 					onClick={() => setShowWorkspaceSelectionPanel(false)}
 				/>
 			)}
