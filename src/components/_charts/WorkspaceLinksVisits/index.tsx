@@ -50,6 +50,9 @@ const WorkspaceLinksVisits = ({ workspaceId }: { workspaceId: string }) => {
 	if (loading) return <div>loading...</div>;
 	return (
 		<Line
+			options={{
+				showLine: true,
+			}}
 			data={{
 				labels: labels,
 				datasets: [
@@ -59,6 +62,8 @@ const WorkspaceLinksVisits = ({ workspaceId }: { workspaceId: string }) => {
 						fill: false,
 						backgroundColor: 'rgb(255, 99, 132)',
 						borderColor: 'rgba(255, 99, 132, 0.2)',
+						tension: 0.35,
+						capBezierPoints: true,
 					},
 				],
 			}}
