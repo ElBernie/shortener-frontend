@@ -1,9 +1,9 @@
-'user server';
+'use server';
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
 
-export const DeleteUser = async (userId: string) => {
+export const deleteUserAction = async (userId: string) => {
 	const session = await getServerSession(authOptions);
 	if (!session?.user.accessToken) throw new Error('UNAUTHENTICATED');
 
