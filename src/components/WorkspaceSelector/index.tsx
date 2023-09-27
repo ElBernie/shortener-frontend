@@ -6,9 +6,8 @@ import style from './style.module.scss';
 import { Workspace } from '@/types/types';
 import Link from 'next/link';
 import { LuChevronDown } from 'react-icons/lu';
-
-import { getUserWorkspaces } from '@/actions/users/getUserWorkspaces.action';
 import { Oval } from 'react-loader-spinner';
+import { getUsersWorkspaces } from '@/helpers';
 
 interface WorkspaceSelectionPanelProps {
 	workspaces: Workspace[];
@@ -72,7 +71,7 @@ const WorkspaceSelector = (props: WorkspaceSelectorProps) => {
 	const [showWorkspaceSelectionPanel, setShowWorkspaceSelectionPanel] =
 		useState<boolean>(false);
 	const getWorkspaces = async () => {
-		const data = await getUserWorkspaces();
+		const data = await getUsersWorkspaces();
 		setWorkspaces([...data.owned, ...data.member]);
 		setLoading(false);
 	};

@@ -13,38 +13,23 @@ import {
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { hasUserPermission } from '@/helpers';
 
 const DashboardNav = () => {
 	const pathname = usePathname();
 	const session = useSession();
-	const [keepNavbarOpen, setKeepNavbarOpen] = useState(false);
+
 	const [navbarOpen, setNavbarOpen] = useState(false);
 	return (
 		<div
 			className={style.dashboardNavContainer}
 			onMouseEnter={() => {
-				if (!keepNavbarOpen) {
-					setNavbarOpen(true);
-				}
+				setNavbarOpen(true);
 			}}
 			onMouseLeave={() => {
-				if (!keepNavbarOpen) {
-					setNavbarOpen(false);
-				}
+				setNavbarOpen(false);
 			}}
 		>
-			{/* <div>
-				{keepNavbarOpen ? (
-					<LuChevronLeftCircle
-						onClick={() => {
-							setKeepNavbarOpen(false);
-							setNavbarOpen(false);
-						}}
-					/>
-				) : (
-					<LuChevronRightCircle onClick={() => setKeepNavbarOpen(true)} />
-				)}
-			</div> */}
 			<nav>
 				<ul>
 					<li className={`${style.activeLink} ${style.createButton}`}>
@@ -89,18 +74,23 @@ const DashboardNav = () => {
 							</Link>
 						</li>
 					)}
-					<li
-						className={
-							pathname == '/dashboard/workspace/settings'
-								? style.activeLink
-								: undefined
-						}
-					>
-						<Link href='/dashboard/workspace/settings'>
-							<LuSettings />
-							{navbarOpen && <span>Settings</span>}
-						</Link>
-					</li>
+					{hasUserPermission({
+						session: session.data,
+						permission: 'workspaceEdit',
+					}) && (
+						<li
+							className={
+								pathname == '/dashboard/workspace/settings'
+									? style.activeLink
+									: undefined
+							}
+						>
+							<Link href='/dashboard/workspace/settings'>
+								<LuSettings />
+								{navbarOpen && <span>Settings</span>}
+							</Link>
+						</li>
+					)}
 				</ul>
 			</nav>
 		</div>

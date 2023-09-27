@@ -2,6 +2,7 @@ import { WORKSPACE_PERMISSIONS, Workspace } from '@/types/types';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+import { getUserWorkspaces as getUserWorkspacesAction } from '@/actions/users/getUserWorkspaces.action';
 
 interface HasUserPermissionProps {
 	session?: Session | null;
@@ -26,7 +27,7 @@ export const getUsersWorkspaces = async () => {
 	if (!session?.user.id) redirect('/auth/signin');
 
 	const data: { owned: Workspace[]; member: Workspace[] } =
-		await getUsersWorkspaces();
+		await getUserWorkspacesAction();
 
 	const member: Workspace[] = data.member
 		.filter((workspace: Workspace) => {
