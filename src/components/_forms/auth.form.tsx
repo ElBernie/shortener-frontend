@@ -4,7 +4,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
+import style from './auth.module.scss';
 const AuthForm = ({ redirect }: { redirect?: string }) => {
 	const router = useRouter();
 	const { register, handleSubmit } = useForm();
@@ -24,17 +24,27 @@ const AuthForm = ({ redirect }: { redirect?: string }) => {
 	});
 
 	return (
-		<form onSubmit={login}>
-			<input
-				type='email'
-				placeholder='Email'
-				{...register('email', { required: true })}
-			/>
-			<input
-				type='password'
-				placeholder='Password'
-				{...register('password', { required: true })}
-			/>
+		<form onSubmit={login} className={style.form}>
+			<fieldset>
+				<legend>Email</legend>
+
+				<input
+					type='email'
+					placeholder='Email'
+					{...register('email', { required: true })}
+				/>
+			</fieldset>
+
+			<fieldset>
+				<legend>Password</legend>
+
+				<input
+					type='password'
+					placeholder='Password'
+					{...register('password', { required: true })}
+				/>
+			</fieldset>
+
 			<button type='submit'>Login</button>
 			{formError && <p>{formError}</p>}
 		</form>
