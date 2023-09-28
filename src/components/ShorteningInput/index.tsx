@@ -31,7 +31,7 @@ const ShorteningInput = () => {
 		}
 
 		const shortenData = await shortenRequest.json();
-		urlInput && urlInput.current && (urlInput.current.value = '');
+		urlInput?.current && (urlInput.current.value = '');
 		setShortenedLinks((currentLinks) => [...currentLinks, shortenData]);
 		setShortening(false);
 	};
@@ -80,7 +80,7 @@ const ShorteningInput = () => {
 			</form>
 			{shortenedLinks.length > 0 && (
 				<div>
-					{shortenedLinks.reverse().map((link) => (
+					{shortenedLinks.toReversed().map((link) => (
 						<LinkDisplay
 							link={link}
 							key={link.id}
