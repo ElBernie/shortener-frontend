@@ -80,7 +80,7 @@ const ShorteningInput = () => {
 			</form>
 			{shortenedLinks.length > 0 && (
 				<div>
-					{shortenedLinks.toReversed().map((link) => (
+					{shortenedLinks.reverse().map((link) => (
 						<LinkDisplay
 							link={link}
 							key={link.id}
