@@ -7,14 +7,17 @@ import { FieldValue } from 'react-hook-form';
 import { hasUserPermission } from '@/helpers';
 import { Link } from '@/types/types';
 import LinkDisplay from '../LinkDisplay';
-
+import { Oval } from 'react-loader-spinner';
+import style from './style.module.scss';
 const ShorteningInput = () => {
 	const session = useSession();
 	const urlInput = useRef<HTMLInputElement>(null);
 
 	const [shortenedLinks, setShortenedLinks] = useState<Array<Link>>([]);
+	const [isShortening, setShortening] = useState<boolean>(false);
 
 	const shorten = async (data: FieldValue<{ url: string }>) => {
+		setShortening(true);
 		const shortenRequest = await fetch(`/api/links`, {
 			method: 'POST',
 			body: JSON.stringify(data),
@@ -28,8 +31,9 @@ const ShorteningInput = () => {
 		}
 
 		const shortenData = await shortenRequest.json();
-		urlInput && urlInput.current && (urlInput.current.value = '');
+		urlInput?.current && (urlInput.current.value = '');
 		setShortenedLinks((currentLinks) => [...currentLinks, shortenData]);
+		setShortening(false);
 	};
 
 	if (session.status === 'loading') return <p>Loading shortening form</p>;
@@ -40,7 +44,7 @@ const ShorteningInput = () => {
 		return null;
 	return (
 		<>
-			<form>
+			<form className={style.shorteningForm}>
 				<input
 					ref={urlInput}
 					type='url'
@@ -48,6 +52,7 @@ const ShorteningInput = () => {
 					autoComplete='off'
 					autoCapitalize='off'
 					autoCorrect='off'
+					disabled={isShortening}
 					onPaste={(event) => {
 						try {
 							const url = new URL(event.clipboardData.getData('text'));
@@ -59,6 +64,19 @@ const ShorteningInput = () => {
 						}
 					}}
 				/>
+				{isShortening && (
+					<Oval
+						wrapperClass={style.loader}
+						height={25}
+						width={25}
+						color='rgb(76, 138, 116)'
+						visible={true}
+						ariaLabel='loading'
+						secondaryColor='rgb(240, 138, 0)'
+						strokeWidth={5}
+						strokeWidthSecondary={5}
+					/>
+				)}
 			</form>
 			{shortenedLinks.length > 0 && (
 				<div>

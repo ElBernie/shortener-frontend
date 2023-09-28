@@ -1,5 +1,6 @@
 'use client';
 
+import { createWorkspaceInviteAction } from '@/actions/workspaces/createWorkspaceInvite.action';
 import { hasUserPermission } from '@/helpers';
 import { useSession } from 'next-auth/react';
 import { redirect, useRouter } from 'next/navigation';
@@ -11,7 +12,6 @@ interface WorkspaceInviteProps {
 }
 const WorkspaceInvitesSendPage = () => {
 	const session = useSession();
-	const router = useRouter();
 	const { register, handleSubmit } = useForm<WorkspaceInviteProps>();
 
 	const [error, setError] = useState(false);
@@ -28,21 +28,17 @@ const WorkspaceInvitesSendPage = () => {
 		redirect('/dashboard/workspace');
 
 	const sendInvite = handleSubmit(async (data) => {
-		const inviteRequest = await fetch(
-			`/api/workspaces/${session?.data?.currentWorkspace.id}/invites`,
-			{
-				method: 'POST',
-				body: JSON.stringify(data),
-			}
-		);
-
-		if (!inviteRequest.ok) {
+		try {
+			await createWorkspaceInviteAction(
+				session?.data?.currentWorkspace.id,
+				data.email
+			);
+			setInviteSent(true);
+			return;
+		} catch (error) {
 			setInviteSent(true);
 			setError(true);
-			return;
 		}
-
-		setInviteSent(true);
 	});
 
 	if (inviteSent) {
