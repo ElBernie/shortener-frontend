@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import style from './register.module.scss';
+import { registerAction } from '@/actions/auth/register.action';
 
 interface FormValues {
 	email: string;
@@ -23,29 +24,24 @@ const RegisterForm = () => {
 	const [formError, setFormError] = useState<string | null>(null);
 	const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
 	const signup = handleSubmit(async (data) => {
-		const registerRequest = await fetch('/api/auth/register', {
-			method: 'POST',
-			body: JSON.stringify({
-				email: data.email,
-				password: data.password,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-
-		if (!registerRequest.ok) {
-			switch (registerRequest.status) {
-				case 409:
-					setFormError('Email already in use');
-					break;
-				default:
-					setFormError('Something went wrong');
+		try {
+			const registerData = await registerAction(data.email, data.password);
+			setRegisterSuccess(true);
+		} catch (error) {
+			if (error instanceof Error) {
+				console.log(error.message);
+				switch (error.message) {
+					case 'EMAIL_ALREADY_IN_USE': {
+						setFormError('EMAIL_ALREADY_IN_USE');
+						break;
+					}
+					default: {
+						setFormError('Something went wrong');
+						break;
+					}
+				}
 			}
-			return;
 		}
-
-		setRegisterSuccess(true);
 	});
 
 	const confirmPassword = () => {
