@@ -1,4 +1,5 @@
 'use client';
+import { getWorkspaceInvitesAction } from '@/actions/WorkspaceInvites/getWorkspaceInvites.action';
 import { Invite } from '@/types/types';
 import { useEffect, useState } from 'react';
 
@@ -53,14 +54,13 @@ const InvitesPage = () => {
 
 	useEffect(() => {
 		const getInvites = async () => {
-			const invitesRequest = await fetch('/api/users/me/invites');
-			/**
-			 * @todo better error handling
-			 */
-			if (!invitesRequest.ok) setLoadingState('error');
+			try {
+				const invites: Invite[] = await getWorkspaceInvitesAction();
+				setInvites(invites);
+			} catch (error) {
+				setLoadingState('error');
+			}
 
-			const invites: Invite[] = await invitesRequest.json();
-			setInvites(invites);
 			setLoadingState('loaded');
 		};
 		getInvites();

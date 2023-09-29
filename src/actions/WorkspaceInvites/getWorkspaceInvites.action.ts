@@ -1,12 +1,12 @@
+'use server';
+
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { Invite } from '@/types/types';
 import { getServerSession } from 'next-auth';
-import { NextResponse } from 'next/server';
 
-export const GET = async () => {
+export const getWorkspaceInvitesAction = async (): Promise<Invite[]> => {
 	const session = await getServerSession(authOptions);
-	if (!session?.user.accessToken)
-		return new NextResponse(null, { status: 401 });
+	if (!session?.user.accessToken) throw new Error('UNAUTHENTICATED');
 
 	const getInvitesRequest = await fetch(
 		`${process.env.API_URL}/users/${session.user.id}/invites`,
@@ -18,15 +18,9 @@ export const GET = async () => {
 		}
 	);
 
-	if (!getInvitesRequest.ok)
-		return new NextResponse(null, {
-			status: getInvitesRequest.status,
-			statusText: getInvitesRequest.statusText,
-		});
+	/** @todo better error handling */
+	if (!getInvitesRequest.ok) throw new Error();
 
 	const data: Invite[] = await getInvitesRequest.json();
-	return new NextResponse(JSON.stringify(data.length > 0 ? data : []), {
-		status: getInvitesRequest.status,
-		statusText: getInvitesRequest.statusText,
-	});
+	return data.length > 0 ? data : [];
 };
