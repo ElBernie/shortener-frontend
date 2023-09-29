@@ -1,5 +1,6 @@
 'use client';
 
+import { deleteWorkspaceAction } from '@/actions/workspaces/deleteWorskpace.action';
 import { getUsersWorkspaces, hasUserPermission } from '@/helpers';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -18,12 +19,7 @@ const WorkspaceSettingsPage = () => {
 		return router.replace('/dashboard/workspace');
 
 	const deleteWorkspace = async () => {
-		const deleteRequest = await fetch(
-			`/api/workspaces/${session.data.currentWorkspace.id}`,
-			{
-				method: 'DELETE',
-			}
-		);
+		await deleteWorkspaceAction(session.data.currentWorkspace.id);
 
 		/**
 		 * @todo error handling
