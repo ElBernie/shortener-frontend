@@ -1,5 +1,6 @@
 'use client';
 import { getWorkspaceInvitesAction } from '@/actions/WorkspaceInvites/getWorkspaceInvites.action';
+import { updateWorkspaceInviteAction } from '@/actions/WorkspaceInvites/updateWorkspaceInvite.action';
 import { Invite } from '@/types/types';
 import { useEffect, useState } from 'react';
 
@@ -18,19 +19,16 @@ const InviteActionButtons = ({
 
 	const action = async (action: 'ACCEPT' | 'REJECT') => {
 		setLoading(true);
-		const actionRequest = await fetch(`/api/users/me/invites/${inviteId}`, {
-			method: 'POST',
-			body: JSON.stringify({ action }),
-		});
-
-		setLoading(false);
-		if (!actionRequest.ok) {
-			onError?.(actionRequest.statusText);
-			return;
+		try {
+			await updateWorkspaceInviteAction(inviteId, {
+				action: action,
+			});
+			setActionDone(true);
+			onAction?.(action);
+		} catch (error) {
+			if (error instanceof Error) onError?.(error.message);
 		}
-
-		setActionDone(true);
-		onAction?.(action);
+		setLoading(false);
 	};
 
 	if (actionDone) return null;
