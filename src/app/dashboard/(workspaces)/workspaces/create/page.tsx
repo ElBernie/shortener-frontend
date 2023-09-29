@@ -1,5 +1,6 @@
 'use client';
 
+import { createWorkspaceAction } from '@/actions/workspaces/createWorkspace.action';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -13,15 +14,7 @@ const WorkspaceCreatePage = () => {
 	const router = useRouter();
 	const { register, handleSubmit } = useForm<WorkspaceCreateForm>();
 	const createWorkspace = handleSubmit(async (data: WorkspaceCreateForm) => {
-		const request = await fetch('/api/workspaces/create', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${session?.data?.user.accessToken}`,
-			},
-			body: JSON.stringify(data),
-		});
-		const requestData = await request.json();
+		await createWorkspaceAction(data.name);
 		router.push('/dashboard/workspaces');
 	});
 	return (
