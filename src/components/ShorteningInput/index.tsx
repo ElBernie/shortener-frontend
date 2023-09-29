@@ -36,12 +36,21 @@ const ShorteningInput = () => {
 		setShortening(false);
 	};
 
-	if (session.status === 'loading') return <p>Loading shortening form</p>;
-	if (
-		session.status === 'authenticated' &&
-		!hasUserPermission({ session: session.data, permission: 'linksCreate' })
-	)
-		return null;
+	const cursor = () => {
+		if (session.status === 'loading') {
+			return { cursor: 'wait' };
+		} else if (
+			session.status === 'authenticated' &&
+			!hasUserPermission({
+				session: session.data,
+				permission: 'linksCreate',
+			})
+		) {
+			return { cursor: 'not-allowed' };
+		} else {
+			return { cursor: 'auto' };
+		}
+	};
 	return (
 		<>
 			<form className={style.shorteningForm}>
@@ -52,7 +61,16 @@ const ShorteningInput = () => {
 					autoComplete='off'
 					autoCapitalize='off'
 					autoCorrect='off'
-					disabled={isShortening}
+					disabled={
+						isShortening ||
+						session.status === 'loading' ||
+						(session.status === 'authenticated' &&
+							!hasUserPermission({
+								session: session.data,
+								permission: 'linksCreate',
+							}))
+					}
+					style={cursor()}
 					onPaste={(event) => {
 						try {
 							const url = new URL(event.clipboardData.getData('text'));
