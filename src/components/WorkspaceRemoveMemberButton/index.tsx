@@ -1,4 +1,5 @@
 'use client';
+import { removeWorkspaceMemberAction } from '@/actions/workspaces/removeWorkspaceMember.action';
 import { hasUserPermission } from '@/helpers';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -9,17 +10,10 @@ const WorkspaceRemoveMemberButton = ({ memberId }: { memberId: string }) => {
 	if (!session.data?.currentWorkspace || !session.data?.user) return null;
 
 	const removeMember = async () => {
-		const removeMemberRequest = await fetch(
-			`/api/workspaces/${session?.data.currentWorkspace.id}/members/${memberId}`,
-			{
-				method: 'DELETE',
-				headers: {
-					Authorization: `Bearer ${session?.data.user?.accessToken}`,
-				},
-			}
+		await removeWorkspaceMemberAction(
+			session?.data.currentWorkspace.id,
+			memberId
 		);
-		if (!removeMemberRequest.ok) throw new Error('Something went wrong');
-
 		refresh();
 	};
 
