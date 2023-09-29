@@ -1,14 +1,14 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-
 import { useRef, useState } from 'react';
-import { FieldValue } from 'react-hook-form';
 import { hasUserPermission } from '@/helpers';
 import { Link } from '@/types/types';
 import LinkDisplay from '../LinkDisplay';
 import { Oval } from 'react-loader-spinner';
 import style from './style.module.scss';
+import { createLinkAction } from '@/actions/links/createLink.action';
+
 const ShorteningInput = () => {
 	const session = useSession();
 	const urlInput = useRef<HTMLInputElement>(null);
@@ -16,21 +16,9 @@ const ShorteningInput = () => {
 	const [shortenedLinks, setShortenedLinks] = useState<Array<Link>>([]);
 	const [isShortening, setShortening] = useState<boolean>(false);
 
-	const shorten = async (data: FieldValue<{ url: string }>) => {
+	const shorten = async (url: string) => {
 		setShortening(true);
-		const shortenRequest = await fetch(`/api/links`, {
-			method: 'POST',
-			body: JSON.stringify(data),
-		});
-
-		if (!shortenRequest.ok) {
-			/**
-			 * @todo Handle error
-			 */
-			throw new Error('Failed to shorten link');
-		}
-
-		const shortenData = await shortenRequest.json();
+		const shortenData = await createLinkAction(url);
 		urlInput?.current && (urlInput.current.value = '');
 		setShortenedLinks((currentLinks) => [...currentLinks, shortenData]);
 		setShortening(false);
@@ -51,6 +39,7 @@ const ShorteningInput = () => {
 			return { cursor: 'auto' };
 		}
 	};
+
 	return (
 		<>
 			<form className={style.shorteningForm}>
@@ -74,7 +63,7 @@ const ShorteningInput = () => {
 					onPaste={(event) => {
 						try {
 							const url = new URL(event.clipboardData.getData('text'));
-							shorten({ url: url.toString() });
+							shorten(url.toString());
 						} catch (error) {
 							/**
 							 * @todo Handle error
