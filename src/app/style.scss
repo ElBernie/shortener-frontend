@@ -43,6 +43,11 @@ button {
 	&:hover {
 		background-color: darken($color: $color-secondary, $amount: 5);
 	}
+
+	&:disabled {
+		background-color: gray;
+		cursor: not-allowed;
+	}
 }
 
 a {
