@@ -27,7 +27,7 @@ const AccountSettings = () => {
 		if (session.status == 'authenticated' && session.data?.user.id) {
 			loadWorkspaces();
 		}
-	}, []);
+	}, [session]);
 	const deleteAccount = async () => {
 		if (session.data?.user.id) {
 			await deleteUserAction(session.data?.user.id);
