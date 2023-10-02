@@ -10,6 +10,22 @@ interface FormValues {
 	password: string;
 	passwordConfirmation: string;
 }
+
+const PasswordValidator = ({ password }: { password: string }) => {
+	return (
+		<div style={{ display: 'flex', flexDirection: 'column' }}>
+			{password.length < 8 && <span>At least 8 characters</span>}
+			{new RegExp(/[A-Z]/).test(password) == false && (
+				<span>At least 1 uppercase</span>
+			)}
+			{new RegExp(/\d/).test(password) == false && (
+				<span>At least 1 number</span>
+			)}
+			{new RegExp(/[!@#$%^&*()_+{}\[\]:;<>,.?~\\\/\-|=]/).test(password) ==
+				false && <span>At least one special character</span>}
+		</div>
+	);
+};
 const RegisterForm = () => {
 	const {
 		register,
@@ -78,10 +94,29 @@ const RegisterForm = () => {
 							placeholder='Password'
 							{...register('password', {
 								required: true,
-								minLength: 8,
-								validate: () => confirmPassword(),
+								minLength: {
+									value: 8,
+									message: 'Password must be at least 8 characters long',
+								},
+								validate: {
+									atLeastOneUppercase: (value) =>
+										new RegExp(/[A-Z]/).test(value) == true ||
+										'Password must contain at least one uppercase',
+									atLeastOneNumber: (value) =>
+										new RegExp(/\d/).test(value) == true ||
+										'Password must contain at least one number',
+									atLeastOneSpecialCharacter: (value) =>
+										new RegExp(/[!@#$%^&*()_+{}\[\]:;<>,.?~\\\/\-|=]/).test(
+											value
+										) == true ||
+										'Password must contain at least one special character',
+								},
 							})}
 						/>
+						{watch('password')?.length > 0 && (
+							<PasswordValidator password={watch('password')} />
+						)}
+						{errors.password?.message && <p>{errors.password.message}</p>}
 					</div>
 
 					<div>
@@ -98,6 +133,8 @@ const RegisterForm = () => {
 								validate: () => confirmPassword(),
 							})}
 						/>
+						{watch('password') === watch('passwordConfirmation') ||
+							'Passwords do not match'}
 					</div>
 				</fieldset>
 
