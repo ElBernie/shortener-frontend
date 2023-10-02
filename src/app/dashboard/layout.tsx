@@ -3,22 +3,18 @@
 import DashboardNav from '@/components/DashboardNav';
 import { getUsersWorkspaces } from '@/helpers';
 import { useSession } from 'next-auth/react';
-
 import {
 	useSelectedLayoutSegment,
 	redirect,
 	usePathname,
 } from 'next/navigation';
-
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	const path = usePathname();
 	const session = useSession();
 	const segment = useSelectedLayoutSegment();
-	if (!session?.data?.user && session?.status != 'loading') {
-		redirect('/auth/signin?redirect=' + path);
-	}
+	const [loadingWorkspaces, setLoadinWorkspaces] = useState(true);
 
 	const loadUserWorkspaces = async () => {
 		if (session.data?.user.id) {
@@ -29,33 +25,34 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 			const workspacesIds = mergedWorkspaces.map((workspace) => workspace.id);
 
 			if (!workspacesIds.includes(session.data.currentWorkspace.id)) {
-				session.update({
+				console.log('BIM BAM BOUM, CA SWITCHE');
+				await session.update({
 					currentWorkspace: workspaces.owned[0],
 					workspaces,
 				});
 			}
 
-			// compare current workspace to the one in the session, if they are different, update the session (manage permissions)
-			const currentWorkspace = mergedWorkspaces.filter(
-				(workspace) => workspace.id == session.data.currentWorkspace.id
-			)[0];
-			if (
-				JSON.stringify(currentWorkspace) !=
-				JSON.stringify(session.data.currentWorkspace)
-			) {
-				session.update({ currentWorkspace: currentWorkspace });
-			}
+			setLoadinWorkspaces(false);
 		}
 	};
 
 	useEffect(() => {
-		if (session.status == 'authenticated') {
+		if (session.status != 'loading') {
+			if (session.status != 'authenticated' || !session.data?.user) {
+				redirect('/auth/signin?redirect=' + path);
+			}
+
 			loadUserWorkspaces();
 		}
-	}, [segment, session]);
+	}, [session]);
 
-	if (session && session.status == 'loading') {
+	if (session.status == 'loading' || loadingWorkspaces) {
 		return <>loading account...</>;
+	} else if (
+		session.status == 'unauthenticated' ||
+		(session.status == 'authenticated' && !session.data?.user)
+	) {
+		redirect('/auth/signin?redirect=' + path);
 	} else {
 		return (
 			<div
