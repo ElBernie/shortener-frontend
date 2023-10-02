@@ -19,6 +19,10 @@ export const deleteUserAction = async (userId: string) => {
 	);
 
 	/** @todo better handling */
-	if (!deleteUserRequest.ok) throw new Error();
+	if (!deleteUserRequest.ok) {
+		const errorText = await deleteUserRequest.text();
+		throw new Error(errorText);
+	}
+
 	return true;
 };
