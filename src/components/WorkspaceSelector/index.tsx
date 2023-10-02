@@ -39,8 +39,14 @@ const WorkspaceSelectionPanel = (props: WorkspaceSelectionPanelProps) => {
 				<ul>
 					{props.workspaces.map((workspace) => {
 						return (
-							<li key={workspace.id} onClick={() => onSelect(workspace)}>
+							<li
+								key={workspace.id}
+								onClick={() => onSelect(workspace)}
+							>
 								<Link
+									style={{
+										display: 'block',
+									}}
 									href='/dashboard/workspace'
 									onClick={() => props.onClick()}
 								>

@@ -1,4 +1,5 @@
 import { getLinkByAliasAction } from '@/actions/links/getLinkByAlias.action';
+import { registerLinkHit } from '@/actions/links/registerHit.action';
 import validateLinkPassword from '@/actions/validate-password.action';
 
 import { headers } from 'next/headers';
@@ -18,6 +19,14 @@ const AliasPage = async ({
 	if (!data.URL?.url) {
 		return notFound();
 	}
+
+	const headersList = headers();
+	registerLinkHit(data.id, {
+		ip: headersList.get('ip'),
+		useragent: headersList.get('user-agent'),
+		languages: headersList.get('accept-language'),
+		referer: headersList.get('referer'),
+	});
 	if (!data.password) return redirect(data.URL.url);
 
 	return (

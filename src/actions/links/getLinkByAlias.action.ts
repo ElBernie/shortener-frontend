@@ -10,9 +10,11 @@ export const getLinkByAliasAction = async (alias: string): Promise<Link> => {
 		}
 	);
 
-	if (!linkRequest.ok) throw new Error();
-	if (linkRequest.status == 404) throw Error('NOT_FOUND');
-	/**@todo better error handling */
+	if (!linkRequest.ok) {
+		if (linkRequest.status == 404) throw Error('NOT_FOUND');
+		throw new Error();
+	}
+
 	const data = await linkRequest.json();
 	return data;
 };
