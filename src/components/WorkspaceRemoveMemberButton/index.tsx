@@ -2,11 +2,17 @@
 import { removeWorkspaceMemberAction } from '@/actions/workspaces/removeWorkspaceMember.action';
 import { hasUserPermission } from '@/helpers';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
-const WorkspaceRemoveMemberButton = ({ memberId }: { memberId: string }) => {
+interface WorkspaceRemoveMemberButtonProps {
+	memberId: string;
+	onMemberRemoved?: (memberId?: string) => void;
+}
+const WorkspaceRemoveMemberButton = ({
+	memberId,
+	onMemberRemoved,
+}: WorkspaceRemoveMemberButtonProps) => {
 	const session = useSession();
-	const { refresh } = useRouter();
+
 	if (!session.data?.currentWorkspace || !session.data?.user) return null;
 
 	const removeMember = async () => {
@@ -14,7 +20,7 @@ const WorkspaceRemoveMemberButton = ({ memberId }: { memberId: string }) => {
 			session?.data.currentWorkspace.id,
 			memberId
 		);
-		refresh();
+		onMemberRemoved?.(memberId);
 	};
 
 	const userHasRights = hasUserPermission({

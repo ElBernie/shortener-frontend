@@ -76,7 +76,19 @@ const WorkspaceMembersPage = () => {
 							{members.members.map((member: any) => (
 								<li key={member.id}>
 									{member.email}{' '}
-									<WorkspaceRemoveMemberButton memberId={member.id} />
+									<WorkspaceRemoveMemberButton
+										memberId={member.id}
+										onMemberRemoved={(memberId) => {
+											const updatedMembers = {
+												owner: members.owner,
+												members: members?.members.filter(
+													(member) => member.id != memberId
+												),
+											};
+
+											setMembers(updatedMembers);
+										}}
+									/>
 								</li>
 							))}
 						</ul>
