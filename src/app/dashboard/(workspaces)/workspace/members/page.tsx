@@ -1,42 +1,87 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+'use client';
+import { getWorkspaceMembersAction } from '@/actions/workspaces/getWorkspaceMembers.action';
+import { removeWorkspaceMemberAction } from '@/actions/workspaces/removeWorkspaceMember.action';
 import WorkspaceRemoveMemberButton from '@/components/WorkspaceRemoveMemberButton';
-import { getServerSession } from 'next-auth';
+import { getUsersWorkspaces } from '@/helpers';
+import { User } from '@/types/types';
+import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-const WorkspaceMembersPage = async () => {
-	const session = await getServerSession(authOptions);
-	if (!session?.currentWorkspace) redirect('/dashboard/workspaces');
-	if (session.currentWorkspace.type === 'PERSONAL') redirect('/dashboard/workspace');
-	const membersRequest = await fetch(
-		`${process.env.API_URL}/workspaces/${session?.currentWorkspace.id}/members`,
-		{
-			headers: {
-				Authorization: `Bearer ${session.user.accessToken}`,
-			},
+const WorkspaceMembersPage = () => {
+	const {
+		data: session,
+		update: updateSession,
+		status: sessionStatus,
+	} = useSession();
+	const [loadingMembers, setLoadingMembers] = useState(true);
+	const [members, setMembers] = useState<
+		| {
+				owner: User;
+				members: User[];
+		  }
+		| undefined
+	>();
+
+	const loadMembers = async () => {
+		const members = await getWorkspaceMembersAction(
+			session!.currentWorkspace.id
+		);
+		setMembers(members);
+		setLoadingMembers(false);
+	};
+
+	useEffect(() => {
+		if (sessionStatus != 'loading') {
+			if (sessionStatus != 'authenticated' || !session.user)
+				redirect('/auth/signin');
+			if (!session?.currentWorkspace) redirect('/dashboard/workspaces');
+			if (session.currentWorkspace.type === 'PERSONAL')
+				redirect('/dashboard/workspace');
+			loadMembers();
 		}
-	);
+	}, [session, sessionStatus]);
 
-	/**
-	 * @todo better error handling
-	 */
-	if (!membersRequest.ok) throw new Error('Something went wrong');
+	if (loadingMembers) return <p>Loading...</p>;
 
-	const members = await membersRequest.json();
 	return (
 		<div>
-			<h1>Workspace Members Page</h1>
-			owner: {members.owner.email}
-			{members.length == 0 ? (
-				<p>No members</p>
-			) : (
-				<ul>
-					{members.members.map((member: any) => (
-						<li key={member.id}>
-							{member.email}{' '}
-							<WorkspaceRemoveMemberButton memberId={member.id} />
-						</li>
-					))}
-				</ul>
+			{members && (
+				<>
+					<h1>Workspace Members Page</h1>
+					owner: {members.owner.email}
+					{members.owner.id !== session!.user.id && (
+						<button
+							onClick={async () => {
+								await removeWorkspaceMemberAction(
+									session!.currentWorkspace.id,
+									session!.user.id
+								);
+								const userWorkspaces = await getUsersWorkspaces();
+								const defaultWorkspace = userWorkspaces.owned.filter(
+									(workspace) => workspace.type === 'PERSONAL'
+								)[0];
+								updateSession({
+									currentWorkspace: defaultWorkspace,
+								});
+							}}
+						>
+							Leave workspace
+						</button>
+					)}
+					{members.members.length == 0 ? (
+						<p>No members</p>
+					) : (
+						<ul>
+							{members.members.map((member: any) => (
+								<li key={member.id}>
+									{member.email}{' '}
+									<WorkspaceRemoveMemberButton memberId={member.id} />
+								</li>
+							))}
+						</ul>
+					)}
+				</>
 			)}
 		</div>
 	);
