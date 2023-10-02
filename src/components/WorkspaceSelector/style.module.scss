@@ -56,8 +56,10 @@
 				margin: 0;
 
 				a {
+					display: block;
 					color: $color-text;
 					padding: 0 1.5rem;
+					cursor: pointer;
 				}
 			}
 		}
